@@ -1,7 +1,4 @@
 <?php
-echo "<pre>";
-print_r($data);
-echo "</pre>";
 $error_input_classes = 'ads-input-error';
 $error_text_classes = 'ads-text-error';
 $printing_price = get_option('ads_printing_price');
@@ -16,33 +13,6 @@ $nozzle_diameter = empty($nozzle_diameter) || !empty($_POST) ? $_POST['nozzle_di
 $layer_heights = !empty($_POST['layer_heights']) ? $_POST['layer_heights'] : $layer_heights;
 
 ?>
-<style>
-    .ads-input-error {
-        border-color: #c61010 !important;
-    }
-
-    .ads-text-error {
-        color: #c61010 !important;
-    }
-
-    .remove_layer_height_btn,
-    .add_button {
-        font-size: 18px !important;
-        margin-left: 10px;
-        vertical-align: middle;
-        cursor: pointer;
-    }
-
-    .add_button {
-        font-size: 13px !important;
-        margin-top: 10px !important;
-    }
-
-    .remove_layer_height_btn:hover,
-    .add_button:hover {
-        color: #494949;
-    }
-</style>
 <form method="post">
   <table class="form-table" role="presentation">
     <tbody>
@@ -132,12 +102,5 @@ $layer_heights = !empty($_POST['layer_heights']) ? $_POST['layer_heights'] : $la
   </p>
 </form>
 <script>
-    jQuery('#add_field').on('click', function () {
-        const input_field = '<p><input name="layer_heights[]" class="regular-text" type="number" ><span title="Remove field" class="remove_layer_height_btn">x</span></p>';
-        jQuery('.nozzle_diameter_wrapper').append(input_field);
-    });
-    jQuery(document).on('click', '.remove_layer_height_btn', function () {
 
-        jQuery(this).parents("p").remove();
-    })
 </script>

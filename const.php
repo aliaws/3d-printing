@@ -1,0 +1,13 @@
+<?php
+const PRINTING__FILE__ = __FILE__;
+
+define('PRINTING_PLUGIN_PATH', plugin_dir_path(PRINTING__FILE__));
+
+define('PRINTING_URL', plugins_url('/', PRINTING__FILE__));
+const PRINTING_ASSETS_URL = PRINTING_URL . 'assets/';
+
+
+define('PRINTING_PLUGIN_BASE', plugin_basename(PRINTING__FILE__));
+const PRINTING_PLUGIN_FRONTEND_BASE = PRINTING_PLUGIN_PATH . "frontend/";
+const PRINTING_PLUGIN_ADMIN_BASE = PRINTING_PLUGIN_PATH . "admin/";
+const PRINTING_PLUGIN_BACKEND_BASE = PRINTING_PLUGIN_PATH . "backend/";
