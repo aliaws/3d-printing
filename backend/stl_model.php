@@ -6,7 +6,7 @@ function register_woocommerce_stl_model_product() {
       parent::__construct($product);
     }
 
-    public function get_type() {
+    public function get_type(): string {
       return 'stl_model';
     }
   }

@@ -70,6 +70,12 @@ function calculated_price_volume_response($volume, $time_in_seconds, $formatted_
 
 add_filter('woocommerce_cart_item_name', 'ads_update_cart_line_items', 10, 3);
 function ads_update_cart_line_items($product_name, $cart_item, $cart_item_key) {
+  $file = '';
+  if (!empty($cart_item['stl_file'])) {
+    $file = explode('/', $cart_item['stl_file']);
+    $file = "<br>" . end($file);
+  }
+  $product_name .= $file;
   $product_name .= !empty($cart_item['volume']) ? "<br>Model Volume: {$cart_item['volume']}" : "";
   $product_name .= !empty($cart_item['printing_time']) ? "<br>Printing Time: {$cart_item['printing_time']}" : "";
   return $product_name;
