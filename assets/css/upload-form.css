@@ -1,0 +1,9 @@
+.hide {
+  display: none !important;
+}
+
+.file-input-container {
+  display: flex;
+  align-items: center;
+}
+
