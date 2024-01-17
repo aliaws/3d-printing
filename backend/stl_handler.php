@@ -2,16 +2,15 @@
 
 
 add_action('woocommerce_before_calculate_totals', 'stl_custom_price_update', 1000, 1);
-function stl_custom_price_update($cart) {
-  // This is necessary for WC 3.0+
-  if (is_admin() && !defined('DOING_AJAX'))
+function stl_custom_price_update($cart): void {
+  if (is_admin() && !defined('DOING_AJAX')) {
     return;
+  }
 
-  // Avoiding hook repetition (when using price calculations for example | optional)
-  if (did_action('woocommerce_before_calculate_totals') >= 2)
+  if (did_action('woocommerce_before_calculate_totals') >= 2) {
     return;
+  }
 
-  // Loop through cart items
   foreach ($cart->get_cart() as $cart_item) {
     if (!empty($cart_item['stl_price'])) {
       $cart_item['data']->set_price($cart_item['stl_price']);
@@ -32,17 +31,8 @@ function stl_add_to_cart_handler() {
     'printing_time' => $_POST['printing_time']
   ];
   $cart_item_key = WC()->cart->add_to_cart(product_id: $_POST['product_id'], cart_item_data: $cart_item_data);
-//  $cart_item_key = WC()->cart->add_to_cart($_POST['product_id']);
-//  echo "<pre>" . print_r($_POST, true) . "</pre>";
-//  echo "<pre>" . print_r(WC()->cart->cart_contents, true) . "</pre>";
-//  WC()->cart->cart_contents[$cart_item_key]['price'] = $_POST['price'];
   WC()->cart->cart_contents[$cart_item_key]['data']->set_price($_POST['price']);
-//  WC()->cart->cart_contents[$cart_item_key]['data']->regular_price = $_POST['price'];
-//  WC()->cart->cart_contents[$cart_item_key]['data']->sale_price = $_POST['price'];
   WC()->cart->set_session();
-  echo "<pre>" . print_r(WC()->cart->cart_contents[$cart_item_key], true) . "</pre>";
-
-//  WC()->cart->
 }
 
 add_action("wp_ajax_ads_stl_form_submission_handler", "ads_stl_form_submission_handler");

@@ -1,24 +1,4 @@
 <?php
-//
-//$allowedExtensions = array('stl');
-//$value = explode('.', $_FILES['file']['name']);
-//$extension = strtolower(end($value));
-//
-//if (in_array($extension, $allowedExtensions)) {
-//  if ($_FILES['file']['error'] > 0) {
-//    echo "Error: {$_FILES['file']['error']} ";
-//  } else {
-//    $obj = new STLCalc ($upload['file']);
-//    $unit = 'mm';
-//    $volume = $obj->GetVolume($unit);
-//
-//    $triangles_count = $obj->GetTrianglesCount();
-//    [$printing_time, $formatted_time] = $obj->CalculatePrintingTime($volume);
-//  }
-//} else {
-//  echo 'File too large or bad file extension.';
-//}
-
 
 class STLCalc {
 

@@ -19,6 +19,5 @@ function save_printer_properties(): void {
   $data = validate_printer_properties_form();
   ob_start();
   include_once(PRINTING_PLUGIN_FRONTEND_BASE . '/printing-form.php');
-  $some_var = ob_get_clean();
-  echo $some_var;
+  echo ob_get_clean();
 }
