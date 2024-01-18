@@ -1,7 +1,7 @@
 <?php
-include_once(PRINTING_PLUGIN_BACKEND_BASE . '/index.php');
-include_once(PRINTING_PLUGIN_BACKEND_BASE . '/stl_handler.php');
-include_once(PRINTING_PLUGIN_ADMIN_BASE . '/index.php');
+require_once(PRINTING_PLUGIN_BACKEND_BASE . '/index.php');
+require_once(PRINTING_PLUGIN_BACKEND_BASE . '/stl_handler.php');
+require_once(PRINTING_PLUGIN_ADMIN_BASE . '/index.php');
 
 function ads_stl_admin_scripts(): void {
   wp_enqueue_style('ads-stl-style', PRINTING_ASSETS_URL . 'css/custom.css', false, '1.2');

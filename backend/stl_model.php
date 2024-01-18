@@ -53,5 +53,4 @@ function ads_stl_model_printing_estimate_form() {
   return ob_get_clean();
 }
 
-//
 add_shortcode('ads_stl_model_printing_estimate', 'ads_stl_model_printing_estimate_form');

@@ -37,7 +37,7 @@ const fileUploadHandler = () => {
           jQuery('#stl_estimation').html(response);
         },
         error: function () {
-          jQuery('#stl_estimation').html('Error occurred during file upload.');
+          jQuery('#stl_estimation').html('An error occurred during file upload.');
         }
       });
     }
@@ -51,6 +51,7 @@ const addToCartHandler = () => {
     let add_to_cart_form = new FormData();
     add_to_cart_form.append('volume', jQuery('#stl_volume').val())
     add_to_cart_form.append('price', jQuery('#stl_printing_price').val())
+    add_to_cart_form.append('file_name', jQuery('#stl_file_name').val())
     add_to_cart_form.append('file_path', jQuery('#stl_file_path').val())
     add_to_cart_form.append('product_id', jQuery('#stl_product_id').val())
     add_to_cart_form.append('printing_time', jQuery('#stl_printing_time').val())
@@ -66,7 +67,7 @@ const addToCartHandler = () => {
         jQuery('#add_to_cart_response').html(response);
       },
       error: function () {
-        jQuery('#add_to_cart_response').html('Error occurred during file upload.');
+        jQuery('#add_to_cart_response').html('An error while adding the file to cart.');
       }
     });
   })

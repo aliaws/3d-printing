@@ -6,5 +6,5 @@
   <input type="button" name="ads_add_to_cart" id="ads_add_to_cart" value="Add To Cart"
          class="hide button wp-element-button">
 </form>
-<div id="stl_estimation"></div>
+<div id="stl_estimation" class="stl_estimation"></div>
 <div id="add_to_cart_response"></div>
