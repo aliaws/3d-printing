@@ -68,12 +68,12 @@ function custom_checkout_create_order_line_item($item, $cart_item_key, $values, 
   if (!empty($values['stl_price'])) {
     $item->update_meta_data('stl_price', $values['stl_price']);
   }
-//  if (!empty($values['stl_file'])) {
-//    $item->update_meta_data('stl_file', $values['stl_file']);
-//  }
-  if (!empty($values['stl_file_url'])) {
-    $item->update_meta_data('stl_file_url', $values['stl_file_url']);
+  if (!empty($values['stl_file'])) {
+    $item->update_meta_data('stl_file', $values['stl_file']);
   }
+//  if (!empty($values['stl_file_url'])) {
+//    $item->update_meta_data('stl_file_url', $values['stl_file_url']);
+//  }
   if (!empty($values['volume'])) {
     $item->update_meta_data('volume', $values['volume']);
   }
@@ -94,12 +94,12 @@ function filter_wc_order_item_display_meta_key($display_key, $meta, $item) {
   if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'printing_time') {
     $display_key = __("Printing Time", "woocommerce");
   }
-//  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file') {
-//    $display_key = __("Uploaded File Path", "woocommerce");
-//  }
-  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file_url') {
-    $display_key = __("Uploaded File URL", "woocommerce");
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file') {
+    $display_key = __("Uploaded STL File", "woocommerce");
   }
+//  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file_url') {
+//    $display_key = __("Uploaded File URL", "woocommerce");
+//  }
   if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'volume') {
     $display_key = __("Volume", "woocommerce");
   }

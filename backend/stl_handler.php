@@ -28,8 +28,8 @@ function stl_add_to_cart_handler() {
 
   $cart_item_data = [
     'stl_price' => $_POST['price'],
-    'stl_file' => $_POST['file_path'],
-    'stl_file_url' => $_POST['file_url'],
+//    'stl_file' => $_POST['file_path'],
+    'stl_file' => $_POST['file_url'],
     'volume' => $_POST['volume'],
     'printing_time' => $_POST['printing_time'],
     'file_name' => $_POST['file_name']
