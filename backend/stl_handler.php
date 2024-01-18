@@ -29,10 +29,12 @@ function stl_add_to_cart_handler() {
   $cart_item_data = [
     'stl_price' => $_POST['price'],
     'stl_file' => $_POST['file_path'],
+    'stl_file_url' => $_POST['file_url'],
     'volume' => $_POST['volume'],
     'printing_time' => $_POST['printing_time'],
     'file_name' => $_POST['file_name']
   ];
+
   $cart_item_key = WC()->cart->add_to_cart(product_id: $_POST['product_id'], cart_item_data: $cart_item_data);
   if ($cart_item_key) {
     echo send_add_to_cart_response($_POST['file_name']);
@@ -62,7 +64,7 @@ function ads_stl_form_submission_handler() {
     $volume = $stl_calculator->GetVolume('cm');
     [$time_in_seconds, $formatted_time] = $stl_calculator->CalculatePrintingTime($volume);
     $printing_price = $stl_calculator->CalculatePrintingPrice($time_in_seconds);
-    echo calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $upload['file'], $_FILES['file']['name']);
+    echo calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $upload, $_FILES['file']['name']);
   } else {
     echo file_upload_error($upload['error']);
   }
@@ -76,7 +78,7 @@ function file_upload_error($error) {
 }
 
 
-function calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $file_path, $original_file_name) {
+function calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $upload, $original_file_name) {
   ob_start();
   require_once PRINTING_PLUGIN_FRONTEND_BASE . 'stl_estimation.php';
   return ob_get_clean();
@@ -90,3 +92,4 @@ function ads_update_cart_line_items($product_name, $cart_item, $cart_item_key) {
   $product_name .= !empty($cart_item['printing_time']) ? "<br> * Printing Time: {$cart_item['printing_time']}" : "";
   return $product_name;
 }
+

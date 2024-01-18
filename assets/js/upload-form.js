@@ -53,6 +53,7 @@ const addToCartHandler = () => {
     add_to_cart_form.append('price', jQuery('#stl_printing_price').val())
     add_to_cart_form.append('file_name', jQuery('#stl_file_name').val())
     add_to_cart_form.append('file_path', jQuery('#stl_file_path').val())
+    add_to_cart_form.append('file_url', jQuery('#stl_file_url').val())
     add_to_cart_form.append('product_id', jQuery('#stl_product_id').val())
     add_to_cart_form.append('printing_time', jQuery('#stl_printing_time').val())
     add_to_cart_form.append('action', 'stl_add_to_cart_handler')

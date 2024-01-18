@@ -54,3 +54,57 @@ function ads_stl_model_printing_estimate_form() {
 }
 
 add_shortcode('ads_stl_model_printing_estimate', 'ads_stl_model_printing_estimate_form');
+
+
+add_filter('woocommerce_get_price_html', 'hide_stl_model_price', 10, 2);
+
+function hide_stl_model_price($price_html, $product) {
+  return $product->get_type() == 'stl_model' ? '' : $price_html;
+}
+
+
+add_action('woocommerce_checkout_create_order_line_item', 'custom_checkout_create_order_line_item', 20, 4);
+function custom_checkout_create_order_line_item($item, $cart_item_key, $values, $order) {
+  if (!empty($values['stl_price'])) {
+    $item->update_meta_data('stl_price', $values['stl_price']);
+  }
+  if (!empty($values['stl_file'])) {
+    $item->update_meta_data('stl_file', $values['stl_file']);
+  }
+  if (!empty($values['stl_file_url'])) {
+    $item->update_meta_data('stl_file_url', $values['stl_file_url']);
+  }
+  if (!empty($values['volume'])) {
+    $item->update_meta_data('volume', $values['volume']);
+  }
+  if (!empty($values['printing_time'])) {
+    $item->update_meta_data('printing_time', $values['printing_time']);
+  }
+  if (!empty($values['file_name'])) {
+    $item->update_meta_data('file_name', $values['file_name']);
+  }
+}
+
+add_filter('woocommerce_order_item_display_meta_key', 'filter_wc_order_item_display_meta_key', 20, 3);
+function filter_wc_order_item_display_meta_key($display_key, $meta, $item) {
+  // Change displayed label for specific order item meta key
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_price') {
+    $display_key = __("Printing Price", "woocommerce");
+  }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'printing_time') {
+    $display_key = __("Printing Time", "woocommerce");
+  }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file') {
+    $display_key = __("Uploaded File Path", "woocommerce");
+  }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file_url') {
+    $display_key = __("Uploaded File URL", "woocommerce");
+  }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'volume') {
+    $display_key = __("Volume", "woocommerce");
+  }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'file_name') {
+    $display_key = __("Original File Name", "woocommerce");
+  }
+  return ucwords(str_replace('_', ' ', $display_key));
+}
