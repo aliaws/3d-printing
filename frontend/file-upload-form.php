@@ -1,5 +1,9 @@
+<p>Please Choose a STL file to upload.</p>
 <form id="file-upload-form" class="file-input-container" action="" method="post" enctype="multipart/form-data">
-  <input type="file" name="custom_file" id="file_upload_input" accept=".stl">
+  <div>
+    <input type="file" class="full-width" name="custom_file" id="file_upload_input" accept=".stl">
+    <progress id="progressBar" class="full-width" value="0" max="100"></progress>
+  </div>
   <input type="submit" class="hide button wp-element-button" name="upload_button" id="upload_button"
          value="Upload File">
   <input type="hidden" name="product_id" id="stl_product_id" value="<?php echo $product->get_id(); ?>">

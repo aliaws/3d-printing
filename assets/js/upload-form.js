@@ -5,10 +5,10 @@ jQuery(document).ready(($) => {
   fileUploadHandler();
 
   addToCartHandler();
-
 })
 const buttonShowHideEvent = () => {
   jQuery('#file_upload_input').on('input', (e) => {
+    jQuery('#progressBar').val(0);
     jQuery('#upload_button').removeClass('hide');
     jQuery('#ads_add_to_cart').addClass('hide');
   });
@@ -32,6 +32,16 @@ const fileUploadHandler = () => {
         data: stl_form,
         processData: false,
         contentType: false,
+        xhr: function () {
+          var xhr = new window.XMLHttpRequest();
+          xhr.upload.addEventListener('progress', function (e) {
+            if (e.lengthComputable) {
+              jQuery('#progressBar').val((e.loaded / e.total) * 100);
+            }
+          });
+
+          return xhr;
+        },
         success: function (response) {
           jQuery('#ads_add_to_cart').removeClass('hide');
           jQuery('#stl_estimation').html(response);

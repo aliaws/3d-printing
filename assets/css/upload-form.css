@@ -5,8 +5,13 @@
 .file-input-container {
   display: flex;
   align-items: center;
+  gap: 20px;
 }
 
 .stl_estimation {
   display: flex;
+}
+
+.full-width {
+  width: 100%;
 }
