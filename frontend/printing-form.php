@@ -13,7 +13,7 @@ $layer_heights = $_POST['layer_heights'] ?? get_option('ads_layer_heights') ? ge
     <tr>
       <th scope="row">
         <label for="printing_price">
-          Price <small>(per mm<sup>3</sup>)</small>
+          Price <small>(per min)</small>
           <span class='ads-text-error'>*</span>
         </label>
       </th>

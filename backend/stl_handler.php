@@ -61,7 +61,7 @@ function ads_stl_form_submission_handler() {
     $stl_calculator = new STLCalc($upload['file']);
     $volume = $stl_calculator->GetVolume('cm');
     [$time_in_seconds, $formatted_time] = $stl_calculator->CalculatePrintingTime($volume);
-    $printing_price = $stl_calculator->CalculatePrintingPrice($volume);
+    $printing_price = $stl_calculator->CalculatePrintingPrice($time_in_seconds);
     echo calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $upload['file'], $_FILES['file']['name']);
   } else {
     echo file_upload_error($upload['error']);

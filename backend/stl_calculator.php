@@ -217,8 +217,7 @@ class STLCalc {
     $nozzle_diameter = get_option('ads_nozzle_diameter') ?? false;
     $layer_height = get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
     $time_in_seconds = intval($volume * 1000 / (floatval($printing_speed) * floatval($nozzle_diameter) * floatval($layer_height[0])));
-    $time_in_seconds = max($time_in_seconds, 60);
-    return [$time_in_seconds, $this->GetFormattedTime($time_in_seconds)];
+    return [max($time_in_seconds, 60), $this->GetFormattedTime($time_in_seconds)];
   }
 
   private function GetFormattedTime($time_in_seconds): string {
@@ -238,8 +237,8 @@ class STLCalc {
     return trim($formatted_time, ', ');
   }
 
-  public function CalculatePrintingPrice($volume) {
+  public function CalculatePrintingPrice($time_in_seconds) {
     $printing_price = get_option('ads_printing_price') ?? false;
-    return $printing_price * $volume;
+    return number_format((float)($printing_price * ($time_in_seconds / 60)), 2, '.', ',');
   }
 }
