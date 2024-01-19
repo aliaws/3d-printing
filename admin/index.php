@@ -4,12 +4,26 @@ add_action('admin_menu', 'register_my_custom_menu_page');
  * @return void
  * this hock is used for the add plugin setting page on the admin sidebar
  */
-function register_my_custom_menu_page() {
+function register_my_custom_menu_page(): void {
   add_menu_page('3D Printing', '3D Printing', 'manage_options', 'my-plugin-settings', 'save_printer_properties');
 }
 
+/**
+ * This method renders the printer attributes in the wp_options table
+ * @return void
+ */
+function save_printer_properties(): void {
+  $data = validate_printer_properties_form();
+  ob_start();
+  include_once(STL_PLUGIN_DIR . '/frontend/printing-form.php');
+  echo ob_get_clean();
+}
 
-function validate_printer_properties_form() {
+/**
+ * This method validates the inputs of the printing form attributes and saves in wp_options table
+ * @return array
+ */
+function validate_printer_properties_form(): array {
   $errors = true;
   $error_messages = [];
   if (empty($_POST)) {
@@ -33,7 +47,11 @@ function validate_printer_properties_form() {
 }
 
 
-function validate_input_properties() {
+/**
+ * This method renders the array of errors while adding the admin fields
+ * @return array
+ */
+function validate_input_properties(): array {
   $error_messages = [];
   if (empty($_POST['printing_speed']) || $_POST['printing_speed'] == 0) {
     $error_messages['printing_speed'] = 'Printing Speed must not be empty or 0';

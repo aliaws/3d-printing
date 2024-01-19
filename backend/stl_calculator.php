@@ -4,8 +4,6 @@ class STLCalc {
 
   // Properties
   private $volume;
-  private $weight;
-  private $density = 1.04;
   private $triangles_count;
   private $triangles_data;
   private $b_binary;
@@ -45,15 +43,6 @@ class STLCalc {
     return $b;
   }
 
-  // Returns the calculated Weight (gm) of the 3D object represented in the binary STL.
-
-  public function getWeight() {
-    $volume = $this->GetVolume('mm');
-    $weight = $this->CalculateWeight($volume);
-    return $weight;
-  }
-
-  // Returns the set Density (gm/cc) of the material.
 
   public function GetVolume($unit) {
     if (!$this->flag) {
@@ -69,7 +58,6 @@ class STLCalc {
     } else {
       $volume = $this->Inch3($this->volume / 1000);
     }
-//    return $volume;
     return number_format((float)$volume, 2, '.', '') . " cubic cm";
   }
 
@@ -106,8 +94,6 @@ class STLCalc {
     return abs($totalVolume);
   }
 
-  // Returns the number of trianges specified in the binary STL definition of the 3D object.
-
   function ReadHeader() {
     fseek($this->fstl_handle, ftell($this->fstl_handle) + 80);
   }
@@ -136,23 +122,10 @@ class STLCalc {
     $b = $this->PhUnpack('v', 2);
 
     $l = count(array($this->points));
-    $this->PhAppend($this->triangles, array($l, $l + 1, $l + 2));
     return $this->SignedVolumeOfTriangle($p1, $p2, $p3);
   }
 
   // Reads the binary header field in the STL file and offsets the file reader pointer to enable reading the triangle-normal data.
-
-  function PhAppend($myarr, $mystuff) {
-    if (gettype($mystuff) == 'array') {
-      $myarr = array_merge($myarr, $mystuff);
-    } else {
-      $ctr = count($myarr);
-      $myarr[$ctr] = $mystuff;
-    }
-    return $myarr;
-  }
-
-  // Reads the binary field in the STL file which specifies the total number of triangles and returns that integer.
 
   function SignedVolumeOfTriangle($p1, $p2, $p3) {
     $v321 = $p3[1] * $p2[2] * $p1[3];
@@ -164,7 +137,7 @@ class STLCalc {
     return (1.0 / 6.0) * (-$v321 + $v231 + $v312 - $v132 - $v213 + $v123);
   }
 
-  // Reads a triangle data from the binary STL and returns its signed volume. A binary STL is a representation of a 3D object as a collection of triangles and their normal vectors. Its specifiction can be found here: http://en.wikipedia.org/wiki/STL_(file_format)%23Binary_STL This function reads the bytes of the binary STL file, decodes the data to give float XYZ co-ordinates of the trinaglular vertices and the normal vector for a triangle.
+  // Reads the binary field in the STL file which specifies the total number of triangles and returns that integer.
 
   function ReadTriangleAscii() {
     $p1[1] = floatval(array_pop($this->triangles_data[4]));
@@ -176,40 +149,25 @@ class STLCalc {
     $p3[1] = floatval(array_pop($this->triangles_data[10]));
     $p3[2] = floatval(array_pop($this->triangles_data[11]));
     $p3[3] = floatval(array_pop($this->triangles_data[12]));
-    $l = count($this->points);
-    $this->PhAppend($this->triangles, array($l, $l + 1, $l + 2));
     return $this->SignedVolumeOfTriangle($p1, $p2, $p3);
   }
 
-  // Reads a triangle data from the ascii STL and returns its signed volume.
+  // Reads a triangle data from the binary STL and returns its signed volume. A binary STL is a representation of a 3D object as a collection of triangles and their normal vectors. Its specifiction can be found here: http://en.wikipedia.org/wiki/STL_(file_format)%23Binary_STL This function reads the bytes of the binary STL file, decodes the data to give float XYZ co-ordinates of the trinaglular vertices and the normal vector for a triangle.
 
   function Inch3($v) {
     return $v * 0.0610237441;
   }
 
-  // Checks if the given file is an ASCII file. Populates the triangles_data array if TRUE.
+  // Reads a triangle data from the ascii STL and returns its signed volume.
 
-  function CalculateWeight($volumeInCm) {
-    return $volumeInCm * $this->density;
-  }
-
-  // Returns the signed volume of a triangle as determined by its 3D, XYZ co-ordinates. The var $pn contains an array ( x, y, z).
-
-  public function GetDensity() {
-    return $this->density;
-  }
-
-  // Converts the volume specified in cubic cm to cubic inches.
-
-  public function SetDensity($den) {
-    $this->density = $den;
-  }
-
-  // Calculates the weight of the supplied volume specified in cubic cm and returns it in gms.
-
-  public function GetTrianglesCount() {
-    $tcount = $this->triangles_count;
-    return $tcount;
+  function PhAppend($myarr, $mystuff) {
+    if (gettype($mystuff) == 'array') {
+      $myarr = array_merge($myarr, $mystuff);
+    } else {
+      $ctr = count($myarr);
+      $myarr[$ctr] = $mystuff;
+    }
+    return $myarr;
   }
 
   public function CalculatePrintingTime($volume): array {

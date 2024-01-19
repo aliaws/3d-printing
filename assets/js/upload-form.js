@@ -73,7 +73,9 @@ const addToCartHandler = () => {
       processData: false,
       contentType: false,
       success: function (response) {
-        jQuery('#ads_add_to_cart').removeClass('hide');
+        console.log(jQuery(this));
+        jQuery('#ads_add_to_cart').addClass('hide');
+        jQuery('#ads_view_cart').removeClass('hide');
         jQuery('#add_to_cart_response').html(response);
       },
       error: function () {

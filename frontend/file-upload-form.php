@@ -9,6 +9,11 @@
   <input type="hidden" name="product_id" id="stl_product_id" value="<?php echo $product->get_id(); ?>">
   <input type="button" name="ads_add_to_cart" id="ads_add_to_cart" value="Add To Cart"
          class="hide button wp-element-button">
+  <a id="ads_view_cart" class="hide button wp-element-button" href="<?php echo wc_get_cart_url(); ?>" target="_self">View
+    Cart</a>
 </form>
 <div id="stl_estimation" class="stl_estimation"></div>
 <div id="add_to_cart_response"></div>
+<script>
+  jQuery('form#file-upload-form').parent().removeClass('has-large-font-size')
+</script>

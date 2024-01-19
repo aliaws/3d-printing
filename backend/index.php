@@ -1,5 +1,5 @@
 <?php
-function duplicate_array() {
+function duplicate_array(): array {
   $duplicate = [];
   $uni = [];
   foreach ($_POST['layer_heights'] as $value) {
