@@ -80,7 +80,7 @@ $layer_heights = $_POST['layer_heights'] ?? get_option('ads_layer_heights') ? ge
         </span>
         <p class="ads-text-error"><?php echo $data['error_messages']['layer_heights'] ?? ''; ?></p>
 
-        <button type="button" id="add_field" class="add_button button button-primary">+ Add Layer Height</button>
+        <button type="button" id="add_field" class="hide add_button button button-primary">+ Add Layer Height</button>
       </td>
     </tr>
     </tbody>
