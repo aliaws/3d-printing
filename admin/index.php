@@ -32,11 +32,14 @@ function validate_printer_properties_form(): array {
   } else {
     $error_messages = validate_input_properties();
     $duplicate = duplicate_array();
+    $_POST['infill_density'] = !empty($_POST['infill_density']);
     if (empty($error_messages)) {
       update_option('ads_printing_price', $_POST['printing_price']);
       update_option('ads_printing_speed', $_POST['printing_speed']);
       update_option('ads_nozzle_diameter', $_POST['nozzle_diameter']);
       update_option('ads_layer_heights', $_POST['layer_heights']);
+      update_option('ads_infill_density', $_POST['infill_density']);
+      update_option('ads_infill_density_list', $_POST['infill_density_list']);
     }
   }
   return [
@@ -69,7 +72,10 @@ function validate_input_properties(): array {
     }
   }
   if (count($_POST['layer_heights']) != count(array_unique($_POST['layer_heights']))) {
-    $error_messages['layer_heights'] = 'Layer Height must not be Duplicate and empty or 0';
+    $error_messages['layer_heights'] = 'Layer Height must not be Duplicate, empty, or 0';
+  }
+  if (count($_POST['infill_density_list']) != count(array_unique($_POST['infill_density_list']))) {
+    $error_messages['infill_density_list'] = 'Infill Densities List must not be Duplicate, empty, or 0';
   }
   return $error_messages;
 }

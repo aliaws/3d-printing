@@ -73,6 +73,10 @@ add_shortcode('ads_stl_printing_form', 'ads_stl_model_printing_estimate_form');
  */
 function ads_stl_model_printing_estimate_form(): bool|string {
   global $product;
+  $infill_density_list = [];
+  if (get_option('ads_infill_density')) {
+    $infill_density_list = get_option('ads_infill_density_list');
+  }
   ob_start();
   require_once STL_PLUGIN_DIR . '/frontend/file-upload-form.php';
   return ob_get_clean();
@@ -117,12 +121,16 @@ function custom_checkout_create_order_line_item($item, $cart_item_key, $values, 
     $item->update_meta_data('volume', $values['volume']);
   }
   if (!empty($values['printing_time'])) {
-    $item->update_meta_data('printing_time', $values['printing_time']);
+    $item->update_meta_data('_printing_time', $values['printing_time']);
   }
   if (!empty($values['file_name'])) {
     $item->update_meta_data('file_name', $values['file_name']);
   }
+  if (!empty($values['infill_density'])) {
+    $item->update_meta_data('infill_density', $values['infill_density']);
+  }
 }
+
 
 add_filter('woocommerce_order_item_display_meta_key', 'filter_wc_order_item_display_meta_key', 20, 3);
 /**
@@ -136,7 +144,7 @@ function filter_wc_order_item_display_meta_key($display_key, $meta, $item): stri
   if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_price') {
     $display_key = __("Printing Price", "woocommerce");
   }
-  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'printing_time') {
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === '_printing_time') {
     $display_key = __("Printing Time", "woocommerce");
   }
   if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'stl_file') {
@@ -148,8 +156,12 @@ function filter_wc_order_item_display_meta_key($display_key, $meta, $item): stri
   if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'file_name') {
     $display_key = __("Original File Name", "woocommerce");
   }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'infill_density') {
+    $display_key = __("Infill Density", "woocommerce");
+  }
   return ucwords(str_replace('_', ' ', $display_key));
 }
+
 
 add_filter('mime_types', 'edit_upload_types');
 /**
@@ -160,4 +172,12 @@ add_filter('mime_types', 'edit_upload_types');
 function edit_upload_types(array $existing_mimes = []): array {
   $existing_mimes['stl'] = 'application/wavefront-stl';
   return $existing_mimes;
+}
+
+add_filter('woocommerce_order_item_display_meta_value', 'change_order_item_meta_value', 20, 3);
+function change_order_item_meta_value($value, $meta, $item) {
+  if ($meta->key == 'infill_density') {
+    $value .= '%';
+  }
+  return $value;
 }

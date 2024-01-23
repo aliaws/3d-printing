@@ -7,4 +7,14 @@ jQuery(document).ready(function ($) {
 
     jQuery(this).parents("p").remove();
   })
+
+  jQuery('#add_infill_density_list').on('click', function () {
+    const input_field = '<p><input step="1" name="infill_density_list[]" class="regular-text" type="number" >' +
+      '<button type="button" id="remove_infill_density_list_btn" class="add_button button button-primary">Remove' +
+      '</button></p>';
+    jQuery('.infill_density_list_wrapper').append(input_field);
+  });
+  jQuery(document).on('click', '#remove_infill_density_list_btn', function () {
+    jQuery(this).parents("p").remove();
+  })
 });
