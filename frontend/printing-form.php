@@ -51,8 +51,8 @@ $layer_heights = $_POST['layer_heights'] ?? get_option('ads_layer_heights') ? ge
     </tr>
     <tr>
       <th scope="row">
-        <label for="nozzle_diameter">
-          Layer Heights <small>(mm)</small>
+        <label for="nozzle_diameter_0">
+          Layer Height <small>(mm)</small>
           <span class='ads-text-error'>*</span>
         </label>
       </th>

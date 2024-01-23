@@ -65,11 +65,13 @@ function stl_model_options_general_product_data(): void {
   }
 }
 
+
+add_shortcode('ads_stl_printing_form', 'ads_stl_model_printing_estimate_form');
 /**
  * this method render the form to upload the STL file to make calculations
  * @return false|string
  */
-function ads_stl_model_printing_estimate_form() {
+function ads_stl_model_printing_estimate_form(): bool|string {
   global $product;
   ob_start();
   require_once STL_PLUGIN_DIR . '/frontend/file-upload-form.php';

@@ -5,6 +5,7 @@ add_action('admin_menu', 'register_my_custom_menu_page');
  * this hock is used for the add plugin setting page on the admin sidebar
  */
 function register_my_custom_menu_page(): void {
+//  add_menu_page('3D Printing', '3D Printing', 'stl_plugin_manager', 'my-plugin-settings', 'save_printer_properties');
   add_menu_page('3D Printing', '3D Printing', 'manage_options', 'my-plugin-settings', 'save_printer_properties');
 }
 
@@ -72,4 +73,14 @@ function validate_input_properties(): array {
   }
   return $error_messages;
 }
+
+//function stl_register_manager_role(): void {
+//  $role = get_role('shop_manager');
+//  $role->add_cap('stl_plugin_manager');
+//  $role = get_role('administrator');
+//  $role->add_cap('stl_plugin_manager');
+//}
+//
+//// Add the simple_role.
+//add_action('init', 'stl_register_manager_role');
 
