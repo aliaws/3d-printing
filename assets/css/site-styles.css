@@ -1,0 +1,8 @@
+div.ads-header-menu ul li:nth-child(5) {
+  background: var(--e-global-color-primary);
+  border-radius: 5px;
+}
+
+div.ads-header-menu ul li:nth-child(5) a {
+  color: #FFFFFF !important;
+}
