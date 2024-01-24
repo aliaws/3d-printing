@@ -73,9 +73,9 @@ add_shortcode('ads_stl_printing_form', 'ads_stl_model_printing_estimate_form');
  */
 function ads_stl_model_printing_estimate_form(): bool|string {
   global $product;
-  $infill_density_list = [];
+  $infill_density_values = [];
   if (get_option('ads_infill_density')) {
-    $infill_density_list = get_option('ads_infill_density_list');
+    $infill_density_values = get_option('ads_infill_density_values');
   }
   ob_start();
   require_once STL_PLUGIN_DIR . '/frontend/file-upload-form.php';
@@ -127,7 +127,10 @@ function custom_checkout_create_order_line_item($item, $cart_item_key, $values, 
     $item->update_meta_data('file_name', $values['file_name']);
   }
   if (!empty($values['infill_density'])) {
-    $item->update_meta_data('infill_density', $values['infill_density']);
+    $item->update_meta_data('_infill_density', $values['infill_density']);
+  }
+  if (!empty($values['infill_density_label'])) {
+    $item->update_meta_data('infill_density_label', $values['infill_density_label']);
   }
 }
 
@@ -156,8 +159,11 @@ function filter_wc_order_item_display_meta_key($display_key, $meta, $item): stri
   if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'file_name') {
     $display_key = __("Original File Name", "woocommerce");
   }
-  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'infill_density') {
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === '_infill_density') {
     $display_key = __("Infill Density", "woocommerce");
+  }
+  if (is_admin() && $item->get_type() === 'line_item' && $meta->key === 'infill_density_label') {
+    $display_key = __("Infill Density Label", "woocommerce");
   }
   return ucwords(str_replace('_', ' ', $display_key));
 }
@@ -174,10 +180,10 @@ function edit_upload_types(array $existing_mimes = []): array {
   return $existing_mimes;
 }
 
-add_filter('woocommerce_order_item_display_meta_value', 'change_order_item_meta_value', 20, 3);
-function change_order_item_meta_value($value, $meta, $item) {
-  if ($meta->key == 'infill_density') {
-    $value .= '%';
-  }
-  return $value;
-}
+//add_filter('woocommerce_order_item_display_meta_value', 'change_order_item_meta_value', 20, 3);
+//function change_order_item_meta_value($value, $meta, $item) {
+//  if ($meta->key == 'infill_density') {
+//    $value .= '%';
+//  }
+//  return $value;
+//}

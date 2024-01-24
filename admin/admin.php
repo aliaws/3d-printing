@@ -33,13 +33,15 @@ function validate_printer_properties_form(): array {
     $error_messages = validate_input_properties();
     $duplicate = duplicate_array();
     $_POST['infill_density'] = !empty($_POST['infill_density']);
+    $infill_density_values = array_combine($_POST['infill_density_values'], $_POST['infill_density_labels']);
     if (empty($error_messages)) {
       update_option('ads_printing_price', $_POST['printing_price']);
       update_option('ads_printing_speed', $_POST['printing_speed']);
       update_option('ads_nozzle_diameter', $_POST['nozzle_diameter']);
       update_option('ads_layer_heights', $_POST['layer_heights']);
       update_option('ads_infill_density', $_POST['infill_density']);
-      update_option('ads_infill_density_list', $_POST['infill_density_list']);
+      update_option('ads_infill_density_values', $infill_density_values);
+      update_option('ads_default_infill_density', $_POST['default_infill_density']);
     }
   }
   return [
@@ -48,6 +50,15 @@ function validate_printer_properties_form(): array {
     'error_messages' => $error_messages
   ];
 
+}
+
+function prepare_infill_densities_array(mixed $infill_density_labels, mixed $infill_density_values): array {
+  $densities_array = [];
+  foreach ($infill_density_labels as $index => $density_label) {
+    $value = $infill_density_values[$index] ?? '';
+    $densities_array[$value] = $density_label;
+  }
+  return $densities_array;
 }
 
 
@@ -74,8 +85,11 @@ function validate_input_properties(): array {
   if (count($_POST['layer_heights']) != count(array_unique($_POST['layer_heights']))) {
     $error_messages['layer_heights'] = 'Layer Height must not be Duplicate, empty, or 0';
   }
-  if (count($_POST['infill_density_list']) != count(array_unique($_POST['infill_density_list']))) {
-    $error_messages['infill_density_list'] = 'Infill Densities List must not be Duplicate, empty, or 0';
+  if (count($_POST['infill_density_values']) != count(array_unique($_POST['infill_density_values']))) {
+    $error_messages['infill_density_values'] = 'Infill Densities List must not be Duplicate, empty, or 0';
+  }
+  if (count($_POST['infill_density_values']) != count($_POST['infill_density_labels'])) {
+    $error_messages['infill_density_values'] .= '<br>Please provide all labels and values';
   }
   return $error_messages;
 }

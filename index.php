@@ -13,10 +13,10 @@ const STL_PLUGIN_DIR = __DIR__;
 define("STL_PLUGIN_URL", plugins_url('/', __FILE__));
 
 require_once(STL_PLUGIN_DIR . '/backend/stl_model.php');
-require_once(STL_PLUGIN_DIR . '/backend/index.php');
+require_once(STL_PLUGIN_DIR . '/backend/backend.php');
 require_once(STL_PLUGIN_DIR . '/backend/stl_handler.php');
 require_once(STL_PLUGIN_DIR . '/frontend/frontend.php');
-require_once(STL_PLUGIN_DIR . '/admin/index.php');
+require_once(STL_PLUGIN_DIR . '/admin/admin.php');
 
 add_action('admin_enqueue_scripts', 'ads_stl_admin_scripts');
 /**

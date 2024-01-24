@@ -6,9 +6,19 @@ $printing_price = $_POST['printing_price'] ?? get_option('ads_printing_price') ?
 $printing_speed = $_POST['printing_speed'] ?? get_option('ads_printing_speed') ?? null;
 $nozzle_diameter = $_POST['nozzle_diameter'] ?? get_option('ads_nozzle_diameter') ?? null;
 $infill_density = $_POST['infill_density'] ?? get_option('ads_infill_density') ?? false;
+$default_infill_density = $_POST['default_infill_density'] ?? get_option('ads_default_infill_density') ?? -1;
 
 $layer_heights = $_POST['layer_heights'] ?? get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
-$infill_density_list = $_POST['infill_density_list'] ?? get_option('ads_infill_density_list') ? get_option('ads_infill_density_list') : [0 => '']; ?>
+$infill_density_values = $_POST['infill_density_values'] ?? get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
+
+if (array_key_exists('infill_density_values', $_POST)) {
+  $infill_density_values = array_combine($_POST['infill_density_values'], $_POST['infill_density_labels']);
+} else {
+  $infill_density_values = get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
+}
+
+?>
+
 <form method="post">
   <table class="form-table" role="presentation">
     <tbody>
@@ -88,30 +98,43 @@ $infill_density_list = $_POST['infill_density_list'] ?? get_option('ads_infill_d
     </tr>
     <tr>
       <th scope="row">
-        <label for="infill_density_list">Include Infill Density</label>
+        <label for="infill_density_values">Infill Labels and Multipliers</label>
       </th>
       <td>
-        <span class="infill_density_list_wrapper">
-          <?php if (!empty($infill_density_list)) {
-            foreach ($infill_density_list as $key => $value) {
+        <span class="infill_density_values_wrapper">
+          <p>
+            <label for="infill_density_labels_0">Label</label>
+            <label for="infill_density_values_0">Value</label>
+            <label for="infill_density_default_0">Default Set</label>
+          </p>
+          <?php if (!empty($infill_density_values)) {
+            $itr = 0;
+            foreach ($infill_density_values as $key => $value) {
               if ((!empty($_POST['layer_heights']) && (empty($value) || $value == 0)) || !empty($data['duplicate'][$value])) {
                 $border_error = 'ads-input-error';
               } else {
                 $border_error = '';
               } ?>
               <p>
-                <input step="1" name="infill_density_list[]" class="regular-text <?php echo $border_error ?? ""; ?>"
-                       type="number"
-                       id="infill_density_list_<?php echo $key; ?>" value="<?php echo $value ?? ""; ?>"/>
-                <?php if ($key != 0) { ?>
-                  <button type="button" id="remove_infill_density_list_btn" class="add_button button button-primary">Remove</button>
+                <input name="infill_density_labels[]" class="regular-text <?php echo $border_error ?? ""; ?>"
+                       type="text" placeholder="Label"
+                       id="infill_density_labels_<?php echo $itr; ?>" value="<?php echo $value ?? ""; ?>"/>
+                <input step="0.01" name="infill_density_values[]" type="number" placeholder="Value"
+                       class="regular-text <?php echo $border_error ?? ""; ?>"
+                       id="infill_density_values_<?php echo $itr; ?>" value="<?php echo $key ?? ""; ?>"/>
+                <input type="radio" id="infill_density_default_<?php echo $itr; ?>" name="default_infill_density"
+                       value="<?php echo $itr; ?>" <?php echo $itr == $default_infill_density ? 'checked' : ''; ?>>
+                <?php if ($itr != 0) { ?>
+                  <button type="button" id="remove_infill_density_values_btn"
+                          class="button button-primary">Remove</button>
                 <?php } ?>
               </p>
-            <?php }
+              <?php $itr++;
+            }
           } ?>
         </span>
-        <p class="ads-text-error"><?php echo $data['error_messages']['infill_density_list'] ?? ''; ?></p>
-        <button type="button" id="add_infill_density_list" class="add_button button button-primary">
+        <p class="ads-text-error"><?php echo $data['error_messages']['infill_density_values'] ?? ''; ?></p>
+        <button type="button" id="add_infill_density_values" class="add_button button button-primary">
           + Add Infill Density
         </button>
       </td>

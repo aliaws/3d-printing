@@ -3,11 +3,11 @@
   <div>
     <input type="file" class="full-width" name="custom_file" id="file_upload_input" accept=".stl" disabled>
     <progress id="progressBar" class="stl-progress-bar full-width" value="0" max="100"></progress>
-    <?php if (!empty($infill_density_list)) { ?>
+    <?php if (!empty($infill_density_values)) { ?>
       <label for="infill_density">Infill Density:</label>
       <select name="infill_density" id="infill_density">
-        <?php foreach ($infill_density_list as $key => $value) { ?>
-          <option value="<?php echo $value ?>"><?php echo "$value%"; ?></option>
+        <?php foreach ($infill_density_values as $key => $value) { ?>
+          <option value="<?php echo $key ?>"><?php echo $value; ?></option>
         <?php } ?>
       </select>
     <?php } ?>

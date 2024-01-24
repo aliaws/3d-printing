@@ -27,3 +27,29 @@
 .hide {
   display: none !important;
 }
+
+.infill_density_values_wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: fit-content;
+}
+
+.infill_density_values_wrapper input {
+  max-width: 200px;
+}
+
+.infill_density_values_wrapper p {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.infill_density_values_wrapper p label:last-child {
+  margin-right: 5%;
+}
+
+
+.infill_density_values_wrapper p:first-child {
+  justify-content: space-between;
+}

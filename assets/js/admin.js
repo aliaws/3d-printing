@@ -8,13 +8,14 @@ jQuery(document).ready(function ($) {
     jQuery(this).parents("p").remove();
   })
 
-  jQuery('#add_infill_density_list').on('click', function () {
-    const input_field = '<p><input step="1" name="infill_density_list[]" class="regular-text" type="number" >' +
-      '<button type="button" id="remove_infill_density_list_btn" class="add_button button button-primary">Remove' +
+  jQuery('#add_infill_density_values').on('click', function () {
+    const input_field = '<p><input placeholder="Label" name="infill_density_labels[]" class="regular-text" type="text" >' +
+      '<input step="0.01" placeholder="Value" name="infill_density_values[]" class="regular-text" type="number" >' +
+      '<button type="button" id="remove_infill_density_values_btn" class="button button-primary">Remove' +
       '</button></p>';
-    jQuery('.infill_density_list_wrapper').append(input_field);
+    jQuery('.infill_density_values_wrapper').append(input_field);
   });
-  jQuery(document).on('click', '#remove_infill_density_list_btn', function () {
+  jQuery(document).on('click', '#remove_infill_density_values_btn', function () {
     jQuery(this).parents("p").remove();
   })
 });
