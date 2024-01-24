@@ -9,10 +9,13 @@ jQuery(document).ready(function ($) {
   })
 
   jQuery('#add_infill_density_values').on('click', function () {
-    const input_field = '<p><input placeholder="Label" name="infill_density_labels[]" class="regular-text" type="text" >' +
-      '<input step="0.01" placeholder="Value" name="infill_density_values[]" class="regular-text" type="number" >' +
-      '<button type="button" id="remove_infill_density_values_btn" class="button button-primary">Remove' +
-      '</button></p>';
+    let itr = jQuery('.infill_density_values_wrapper p').length - 1;
+    const input_field = `<p>` +
+      `<input placeholder="Label" name="infill_density_labels[]" class="regular-text" type="text" >` +
+      `<input step="0.01" placeholder="Value" name="infill_density_values[]" class="regular-text" type="number" >` +
+      `<input type="radio" id="infill_density_default_${itr}" name="default_infill_density" value="${itr}" >` +
+      `<button type="button" id="remove_infill_density_values_btn" class="button button-primary">Remove` +
+      `</button></p>`;
     jQuery('.infill_density_values_wrapper').append(input_field);
   });
   jQuery(document).on('click', '#remove_infill_density_values_btn', function () {
