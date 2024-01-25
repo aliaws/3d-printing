@@ -93,7 +93,7 @@ add_filter('woocommerce_get_price_html', 'hide_stl_model_price', 10, 2);
  * @return false|mixed|string
  */
 function hide_stl_model_price($price_html, $product): mixed {
-  if (is_shop()) {
+  if (is_shop() || is_product_category()) {
     return $product->get_type() == 'stl_model' ? '' : $price_html;
   } else {
     return $product->get_type() == 'stl_model' ? ads_stl_model_printing_estimate_form() : $price_html;
