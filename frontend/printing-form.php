@@ -1,24 +1,3 @@
-<?php
-$error_input_classes = 'ads-input-error';
-$error_text_classes = 'ads-text-error';
-
-$printing_price = $_POST['printing_price'] ?? get_option('ads_printing_price') ?? null;
-$printing_speed = $_POST['printing_speed'] ?? get_option('ads_printing_speed') ?? null;
-$nozzle_diameter = $_POST['nozzle_diameter'] ?? get_option('ads_nozzle_diameter') ?? null;
-$infill_density = $_POST['infill_density'] ?? get_option('ads_infill_density') ?? false;
-$default_infill_density = $_POST['default_infill_density'] ?? get_option('ads_default_infill_density') ?? -1;
-
-$layer_heights = $_POST['layer_heights'] ?? get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
-$infill_density_values = $_POST['infill_density_values'] ?? get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
-
-if (array_key_exists('infill_density_values', $_POST)) {
-  $infill_density_values = array_combine($_POST['infill_density_values'], $_POST['infill_density_labels']);
-} else {
-  $infill_density_values = get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
-}
-
-?>
-
 <form method="post">
   <table class="form-table" role="presentation">
     <tbody>
@@ -75,14 +54,14 @@ if (array_key_exists('infill_density_values', $_POST)) {
                        type="number"
                        id="nozzle_diameter_<?php echo $key; ?>" value="<?php echo $value ?? ""; ?>"/>
                 <?php if ($key != 0) { ?>
-                  <span title="Remove field" class="remove_layer_height_btn">x</span>
+                  <span title="Remove field" class="remove-layer-height-btn">x</span>
                 <?php } ?>
               </p>
             <?php }
           } ?>
         </span>
         <p class="ads-text-error"><?php echo $data['error_messages']['layer_heights'] ?? ''; ?></p>
-        <button type="button" id="add_field" class="hide add_button button button-primary">+ Add Layer Height</button>
+        <button type="button" id="add_field" class="hide add-button button button-primary">+ Add Layer Height</button>
       </td>
     </tr>
     <tr>
@@ -101,7 +80,7 @@ if (array_key_exists('infill_density_values', $_POST)) {
         <label for="infill_density_values">Infill Labels and Multipliers</label>
       </th>
       <td>
-        <span class="infill_density_values_wrapper">
+        <span class="infill-density-values-wrapper">
           <p>
             <label for="infill_density_labels_0">Label</label>
             <label for="infill_density_values_0">Value</label>
@@ -134,7 +113,7 @@ if (array_key_exists('infill_density_values', $_POST)) {
           } ?>
         </span>
         <p class="ads-text-error"><?php echo $data['error_messages']['infill_density_values'] ?? ''; ?></p>
-        <button type="button" id="add_infill_density_values" class="add_button button button-primary">
+        <button type="button" id="add_infill_density_values" class="add-button button button-primary">
           + Add Infill Density
         </button>
       </td>

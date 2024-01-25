@@ -15,7 +15,7 @@ class STLCalc {
 
   // Initialises the STLCalc class by passing the path to the binary .stl file.
   function __construct($filepath) {
-    $b = $this->IsAscii($filepath);
+    $b = $this->isAscii($filepath);
     if (!$b) {
       $this->b_binary = TRUE;
       $this->fstl_handle = fopen($filepath, 'rb');
@@ -26,7 +26,7 @@ class STLCalc {
 
   // Returns the calculated Volume (cc) of the 3D object represented in the binary STL. If $unit is 'cm' then returns volume in cubic cm, but If $unit is 'inch' then returns volume in cubic inches.
 
-  function IsAscii($filename) {
+  function isAscii($filename): bool {
     $b = FALSE;
     $namePattern = '/facet\\s+normal\\s+([-+]?\\b(?:[0-9]*\\.)?[0-9]+(?:[eE][-+]?[0-9]+)?\\b)\\s+([-+]?\\b(?:[0-9]*\\.)?[0-9]+(?:[eE][-+]?[0-9]+)?\\b)\\s+([-+]?\\b(?:[0-9]*\\.)?[0-9]+(?:[eE][-+]?[0-9]+)?\\b)\\s+'
       . 'outer\\s+loop\\s+'
@@ -44,9 +44,9 @@ class STLCalc {
   }
 
 
-  public function GetVolume($unit) {
+  public function getVolume($unit) {
     if (!$this->flag) {
-      $v = $this->CalculateVolume();
+      $v = $this->calculateVolume();
       $this->volume = $v;
       $this->flag = true;
     }
@@ -56,25 +56,25 @@ class STLCalc {
     } elseif ($unit == 'mm') {
       $volume = $this->volume;
     } else {
-      $volume = $this->Inch3($this->volume / 1000);
+      $volume = $this->inch3($this->volume / 1000);
     }
     return number_format((float)$volume, 2, '.', '') . " cubic cm";
   }
 
   // Sets the Density (gm/cc) of the material.
 
-  private function CalculateVolume() {
+  private function calculateVolume() {
     $totalVolume = 0;
     if ($this->b_binary) {
       $totbytes = filesize($this->fstl_path);
       $totalVolume = 0;
       try {
-        $this->ReadHeader();
-        $this->triangles_count = $this->ReadTrianglesCount();
+        $this->readHeader();
+        $this->triangles_count = $this->readTrianglesCount();
         $totalVolume = 0;
         try {
           while (ftell($this->fstl_handle) < $totbytes) {
-            $totalVolume += $this->ReadTriangle();
+            $totalVolume += $this->readTriangle();
           }
         } catch (Exception $e) {
           return $e;
@@ -86,7 +86,7 @@ class STLCalc {
     } else {
       $k = 0;
       while (count($this->triangles_data[4]) > 0) {
-        $totalVolume += $this->ReadTriangleAscii();
+        $totalVolume += $this->readTriangleAscii();
         $k += 1;
       }
       $this->triangles_count = $k;
@@ -94,40 +94,40 @@ class STLCalc {
     return abs($totalVolume);
   }
 
-  function ReadHeader() {
+  function readHeader() {
     fseek($this->fstl_handle, ftell($this->fstl_handle) + 80);
   }
 
   // Invokes the binary file reader to read the header, serially reads all the normal vector and triangular co-ordinates, calls the math function to calculate signed tetrahedral volumes for each trangle, sums up these volumes to give the final volume of the 3D object represented in the .stl binary file.
 
-  function ReadTrianglesCount() {
-    $length = $this->PhUnpack('I', 4);
+  function readTrianglesCount() {
+    $length = $this->phUnpack('I', 4);
     return $length[1];
   }
 
   // Wrapper around PHP's unpack() function which decodes binary numerical data to float, int, etc types. $sig specifies the type of data (i.e. integer, float, etc), $l specifies number of bytes to read.
 
-  function PhUnpack($sig, $l) {
+  function phUnpack($sig, $l) {
     $s = fread($this->fstl_handle, $l);
     return unpack($sig, $s);
   }
 
   // Appends to an array either a single var or the contents of another array.
 
-  function ReadTriangle() {
-    $n = $this->PhUnpack('f3', 12);
-    $p1 = $this->PhUnpack('f3', 12);
-    $p2 = $this->PhUnpack('f3', 12);
-    $p3 = $this->PhUnpack('f3', 12);
-    $b = $this->PhUnpack('v', 2);
+  function readTriangle() {
+    $n = $this->phUnpack('f3', 12);
+    $p1 = $this->phUnpack('f3', 12);
+    $p2 = $this->phUnpack('f3', 12);
+    $p3 = $this->phUnpack('f3', 12);
+    $b = $this->phUnpack('v', 2);
 
     $l = count(array($this->points));
-    return $this->SignedVolumeOfTriangle($p1, $p2, $p3);
+    return $this->signedVolumeOfTriangle($p1, $p2, $p3);
   }
 
   // Reads the binary header field in the STL file and offsets the file reader pointer to enable reading the triangle-normal data.
 
-  function SignedVolumeOfTriangle($p1, $p2, $p3) {
+  function signedVolumeOfTriangle($p1, $p2, $p3) {
     $v321 = $p3[1] * $p2[2] * $p1[3];
     $v231 = $p2[1] * $p3[2] * $p1[3];
     $v312 = $p3[1] * $p1[2] * $p2[3];
@@ -139,7 +139,7 @@ class STLCalc {
 
   // Reads the binary field in the STL file which specifies the total number of triangles and returns that integer.
 
-  function ReadTriangleAscii() {
+  function readTriangleAscii() {
     $p1[1] = floatval(array_pop($this->triangles_data[4]));
     $p1[2] = floatval(array_pop($this->triangles_data[5]));
     $p1[3] = floatval(array_pop($this->triangles_data[6]));
@@ -149,18 +149,18 @@ class STLCalc {
     $p3[1] = floatval(array_pop($this->triangles_data[10]));
     $p3[2] = floatval(array_pop($this->triangles_data[11]));
     $p3[3] = floatval(array_pop($this->triangles_data[12]));
-    return $this->SignedVolumeOfTriangle($p1, $p2, $p3);
+    return $this->signedVolumeOfTriangle($p1, $p2, $p3);
   }
 
   // Reads a triangle data from the binary STL and returns its signed volume. A binary STL is a representation of a 3D object as a collection of triangles and their normal vectors. Its specifiction can be found here: http://en.wikipedia.org/wiki/STL_(file_format)%23Binary_STL This function reads the bytes of the binary STL file, decodes the data to give float XYZ co-ordinates of the trinaglular vertices and the normal vector for a triangle.
 
-  function Inch3($v) {
+  function inch3($v) {
     return $v * 0.0610237441;
   }
 
   // Reads a triangle data from the ascii STL and returns its signed volume.
 
-  function PhAppend($myarr, $mystuff) {
+  function phAppend($myarr, $mystuff) {
     if (gettype($mystuff) == 'array') {
       $myarr = array_merge($myarr, $mystuff);
     } else {
@@ -170,16 +170,16 @@ class STLCalc {
     return $myarr;
   }
 
-  public function CalculatePrintingTime($volume, $infill_density): array {
+  public function calculatePrintingTime($volume, $infill_density): array {
     $printing_speed = get_option('ads_printing_speed') ?? false;
     $nozzle_diameter = get_option('ads_nozzle_diameter') ?? false;
     $layer_height = get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
 //    $volume = ($volume * 0.25) + ($volume * 0.75 * $infill_density / 100);
     $time_in_seconds = intval($infill_density * $volume * 1000 / (floatval($printing_speed) * floatval($nozzle_diameter) * floatval($layer_height[0])));
-    return [max($time_in_seconds, 60), $this->GetFormattedTime($time_in_seconds)];
+    return [max($time_in_seconds, 60), $this->getFormattedTime($time_in_seconds)];
   }
 
-  private function GetFormattedTime($time_in_seconds): string {
+  private function getFormattedTime($time_in_seconds): string {
     $minutes = ($time_in_seconds / 60) > 0 ? ($time_in_seconds / 60) % 60 : 0;
     $hours = ($time_in_seconds / 3600) > 0 ? (($time_in_seconds / 3600) % 60) % 24 : 0;
     $days = ($time_in_seconds / 86400) > 0 ? ($time_in_seconds / 86400) % 24 : 0;
@@ -196,7 +196,7 @@ class STLCalc {
     return trim($formatted_time, ', ');
   }
 
-  public function CalculatePrintingPrice($time_in_seconds): string {
+  public function calculatePrintingPrice($time_in_seconds): string {
     $printing_price = get_option('ads_printing_price') ?? false;
     return number_format((float)($printing_price * ($time_in_seconds / 60)), 2, '.', ',');
   }

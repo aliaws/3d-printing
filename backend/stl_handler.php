@@ -1,6 +1,5 @@
 <?php
 
-
 add_action('woocommerce_before_calculate_totals', 'stl_custom_price_update', 1000, 1);
 /**
  * the method updates the stl model type product while being added to cart
@@ -39,8 +38,11 @@ function ads_stl_add_to_cart_handler() {
     'printing_time' => $_POST['printing_time'],
     'file_name' => $_POST['file_name'],
     'infill_density' => $_POST['infill_density'],
-    'infill_density_label' => $_POST['infill_density_label']
+//    'infill_density_label' => $_POST['infill_density_label']
   ];
+  if ($_POST['infill_density_label'] != '') {
+    $cart_item_data['infill_density_label'] = $_POST['infill_density_label'];
+  }
 
   $cart_item_key = WC()->cart->add_to_cart(product_id: $_POST['product_id'], cart_item_data: $cart_item_data);
   if ($cart_item_key) {
@@ -63,7 +65,10 @@ function render_add_to_cart_response($file_name): bool|string {
 
 add_action("wp_ajax_ads_stl_change_in_density_handler", "ads_stl_change_in_density_handler");
 add_action("wp_ajax_nopriv_ads_stl_change_in_density_handler", "ads_stl_change_in_density_handler");
-
+/**
+ * this method prepares the estimation response after the client changes the infill density parameter
+ * @return void
+ */
 function ads_stl_change_in_density_handler() {
   $file_path = str_replace(get_site_url() . "/wp-content/uploads", wp_upload_dir()['basedir'], $_POST['file_url']);
   echo prepare_stl_estimation_response($file_path, $_POST['file_name'], $_POST['infill_density'], $_POST['infill_density_label'], $_POST['file_url']);
@@ -72,7 +77,6 @@ function ads_stl_change_in_density_handler() {
 
 add_action("wp_ajax_ads_stl_form_submission_handler", "ads_stl_form_submission_handler");
 add_action("wp_ajax_nopriv_ads_stl_form_submission_handler", "ads_stl_form_submission_handler");
-
 /**
  * this method handles the STL file upload and calculates the estimated price and time to print
  * @return void
@@ -90,12 +94,22 @@ function ads_stl_form_submission_handler() {
   wp_die();
 }
 
+
+/**
+ * this method prepares the response of STL estimations
+ * @param $file_path
+ * @param $file_name
+ * @param $infill_density
+ * @param $infill_density_label
+ * @param $uploaded_file_url
+ * @return bool|string
+ */
 function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url): bool|string {
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
-  $volume = $stl_calculator->GetVolume('cm');
-  [$time_in_seconds, $formatted_time] = $stl_calculator->CalculatePrintingTime($volume, $infill_density);
-  $printing_price = $stl_calculator->CalculatePrintingPrice($time_in_seconds);
+  $volume = $stl_calculator->getVolume('cm');
+  [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density);
+  $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
   return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
 }
 
@@ -119,6 +133,7 @@ function file_upload_error($error): bool|string {
  * @param $uploaded_file_url
  * @param $original_file_name
  * @param $infill_density
+ * @param $infill_density_label
  * @return bool|string
  */
 function calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $original_file_name, $infill_density, $infill_density_label): bool|string {

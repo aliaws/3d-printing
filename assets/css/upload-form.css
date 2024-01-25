@@ -42,9 +42,8 @@
 }
 
 .load {
-  width: 10px;
-  height: 10px;
-  /*margin: 110px auto 0;*/
+  width: 20px;
+  height: 20px;
   border: solid 5px;
   border-radius: 50%;
   border-right-color: transparent;

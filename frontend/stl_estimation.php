@@ -7,10 +7,12 @@
     <td>Estimated Printing Price:</td>
     <td><strong><?php echo $printing_price; ?></strong></td>
   </tr>
-  <tr>
-    <td>Infill Density:</td>
-    <td><strong><?php echo $infill_density_label; ?></strong></td>
-  </tr>
+  <?php if ($infill_density_label != '') { ?>
+    <tr>
+      <td>Infill Density:</td>
+      <td><strong><?php echo $infill_density_label; ?></strong></td>
+    </tr>
+  <?php } ?>
 </table>
 
 <div class="hide">

@@ -6,7 +6,7 @@ add_action('admin_menu', 'register_my_custom_menu_page');
  */
 function register_my_custom_menu_page(): void {
 //  add_menu_page('3D Printing', '3D Printing', 'stl_plugin_manager', 'my-plugin-settings', 'save_printer_properties');
-  add_menu_page('3D Printing', '3D Printing', 'manage_options', 'my-plugin-settings', 'save_printer_properties');
+  add_menu_page('3D Printing', '3D Printing', 'manage_options', 'printer-properties', 'save_printer_properties');
 }
 
 /**
@@ -15,6 +15,24 @@ function register_my_custom_menu_page(): void {
  */
 function save_printer_properties(): void {
   $data = validate_printer_properties_form();
+  $error_input_classes = 'ads-input-error';
+  $error_text_classes = 'ads-text-error';
+
+  $printing_price = $_POST['printing_price'] ?? get_option('ads_printing_price') ?? null;
+  $printing_speed = $_POST['printing_speed'] ?? get_option('ads_printing_speed') ?? null;
+  $nozzle_diameter = $_POST['nozzle_diameter'] ?? get_option('ads_nozzle_diameter') ?? null;
+  $infill_density = $_POST['infill_density'] ?? get_option('ads_infill_density') ?? false;
+  $default_infill_density = $_POST['default_infill_density'] ?? get_option('ads_default_infill_density') ?? 0;
+
+  $layer_heights = $_POST['layer_heights'] ?? get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
+  $infill_density_values = $_POST['infill_density_values'] ?? get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
+
+  if (array_key_exists('infill_density_values', $_POST)) {
+    $infill_density_values = array_combine($_POST['infill_density_values'], $_POST['infill_density_labels']);
+  } else {
+    $infill_density_values = get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
+  }
+
   ob_start();
   include_once(STL_PLUGIN_DIR . '/frontend/printing-form.php');
   echo ob_get_clean();
@@ -41,7 +59,7 @@ function validate_printer_properties_form(): array {
       update_option('ads_layer_heights', $_POST['layer_heights']);
       update_option('ads_infill_density', $_POST['infill_density']);
       update_option('ads_infill_density_values', $infill_density_values);
-      update_option('ads_default_infill_density', $_POST['default_infill_density']);
+      update_option('ads_default_infill_density', $_POST['default_infill_density'] ?? 0);
     }
   }
   return [
@@ -50,15 +68,6 @@ function validate_printer_properties_form(): array {
     'error_messages' => $error_messages
   ];
 
-}
-
-function prepare_infill_densities_array(mixed $infill_density_labels, mixed $infill_density_values): array {
-  $densities_array = [];
-  foreach ($infill_density_labels as $index => $density_label) {
-    $value = $infill_density_values[$index] ?? '';
-    $densities_array[$value] = $density_label;
-  }
-  return $densities_array;
 }
 
 
@@ -93,6 +102,25 @@ function validate_input_properties(): array {
   }
   return $error_messages;
 }
+
+
+/**
+ * this method checks for the duplicate array
+ * @return array
+ */
+function duplicate_array(): array {
+  $duplicate = [];
+  $uni = [];
+  foreach ($_POST['layer_heights'] as $value) {
+    if (isset($uni[$value])) {
+      $duplicate[$value] = $value;
+    } else {
+      $uni[$value] = $value;
+    }
+  }
+  return $duplicate;
+}
+
 
 //function stl_register_manager_role(): void {
 //  $role = get_role('shop_manager');

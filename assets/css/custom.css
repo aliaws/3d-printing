@@ -6,21 +6,21 @@
   color: #c61010 !important;
 }
 
-.remove_layer_height_btn,
-.add_button {
+.remove-layer-height-btn,
+.add-button {
   font-size: 18px !important;
   margin-left: 10px;
   vertical-align: middle;
   cursor: pointer;
 }
 
-.add_button {
+.add-button {
   font-size: 13px !important;
   margin-top: 10px !important;
 }
 
-.remove_layer_height_btn:hover,
-.add_button:hover {
+.remove-layer-height-btn:hover,
+.add-button:hover {
   color: #494949;
 }
 
@@ -28,28 +28,28 @@
   display: none !important;
 }
 
-.infill_density_values_wrapper {
+.infill-density-values-wrapper {
   display: flex;
   flex-direction: column;
   max-width: fit-content;
 }
 
-.infill_density_values_wrapper input {
+.infill-density-values-wrapper input {
   max-width: 200px;
 }
 
-.infill_density_values_wrapper p {
+.infill-density-values-wrapper p {
   display: flex;
   flex-direction: row;
   align-items: center;
   column-gap: 10px;
 }
 
-.infill_density_values_wrapper p label:last-child {
+.infill-density-values-wrapper p label:last-child {
   margin-right: 5%;
 }
 
 
-.infill_density_values_wrapper p:first-child {
+.infill-density-values-wrapper p:first-child {
   justify-content: space-between;
 }

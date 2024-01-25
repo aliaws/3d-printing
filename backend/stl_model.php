@@ -77,6 +77,7 @@ function ads_stl_model_printing_estimate_form(): bool|string {
   if (get_option('ads_infill_density')) {
     $infill_density_values = get_option('ads_infill_density_values');
   }
+  $default_set = get_option('ads_default_infill_density') ?? 0;
   ob_start();
   require_once STL_PLUGIN_DIR . '/frontend/file-upload-form.php';
   return ob_get_clean();
