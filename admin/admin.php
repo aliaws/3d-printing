@@ -18,6 +18,7 @@ function save_printer_properties(): void {
   $error_input_classes = 'ads-input-error';
   $error_text_classes = 'ads-text-error';
 
+  $default_printing_price = $_POST['default_printing_price'] ?? get_option('ads_default_printing_price') ?? null;
   $printing_price = $_POST['printing_price'] ?? get_option('ads_printing_price') ?? null;
   $printing_speed = $_POST['printing_speed'] ?? get_option('ads_printing_speed') ?? null;
   $nozzle_diameter = $_POST['nozzle_diameter'] ?? get_option('ads_nozzle_diameter') ?? null;
@@ -54,6 +55,7 @@ function validate_printer_properties_form(): array {
     $infill_density_values = array_combine($_POST['infill_density_values'], $_POST['infill_density_labels']);
     if (empty($error_messages)) {
       update_option('ads_printing_price', $_POST['printing_price']);
+      update_option('ads_default_printing_price', $_POST['default_printing_price']);
       update_option('ads_printing_speed', $_POST['printing_speed']);
       update_option('ads_nozzle_diameter', $_POST['nozzle_diameter']);
       update_option('ads_layer_heights', $_POST['layer_heights']);
@@ -82,6 +84,9 @@ function validate_input_properties(): array {
   }
   if (empty($_POST['printing_price']) || $_POST['printing_price'] == 0) {
     $error_messages['printing_price'] = 'Printing Price must not be empty or 0';
+  }
+  if (empty($_POST['default_printing_price']) || $_POST['default_printing_price'] == 0) {
+    $error_messages['default_printing_price'] = 'Default Printing Price must not be empty or 0';
   }
   if (empty($_POST['nozzle_diameter']) || $_POST['nozzle_diameter'] == 0) {
     $error_messages['nozzle_diameter'] = 'Nozzle Diameter must not be empty or 0';

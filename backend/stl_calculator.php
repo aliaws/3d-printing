@@ -197,7 +197,8 @@ class STLCalc {
   }
 
   public function calculatePrintingPrice($time_in_seconds): string {
-    $printing_price = get_option('ads_printing_price') ?? false;
-    return number_format((float)($printing_price * ($time_in_seconds / 60)), 2, '.', ',');
+    $default_printing_price = get_option('ads_default_printing_price') ?? 0;
+    $printing_price = get_option('ads_printing_price') ?? 0;
+    return number_format((float)($default_printing_price + ($printing_price * ($time_in_seconds / 60))), 2, '.', ',');
   }
 }

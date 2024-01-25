@@ -3,6 +3,17 @@
     <tbody>
     <tr>
       <th scope="row">
+        <label for="default_printing_price">Default Price<span class='ads-text-error'>*</span></label>
+      </th>
+      <td>
+        <input step="0.01" name="default_printing_price" value="<?php echo $default_printing_price; ?>" type="number"
+               class="<?php echo $data['errors'] && !empty($data['error_messages']['default_printing_price']) ? $error_input_classes : ""; ?> regular-text"
+               id="default_printing_price">
+        <p class="ads-text-error"><?php echo $data['error_messages']['default_printing_price'] ?? ''; ?></p>
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
         <label for="printing_price">Price <small>(per min)</small><span class='ads-text-error'>*</span></label>
       </th>
       <td>
