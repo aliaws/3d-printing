@@ -1,5 +1,6 @@
 div.ads-header-menu ul li:nth-child(5) {
-  background: var(--e-global-color-primary);
+  /*background: var(--e-global-color-primary);*/
+  background: var(--e-global-color-8ed4e95);
   border-radius: 5px;
 }
 
@@ -8,7 +9,12 @@ div.ads-header-menu ul li:nth-child(5) a {
 }
 
 .button {
-  background-color: var(--e-global-color-primary) !important;
+  background-color: var(--e-global-color-8ed4e95) !important;
   color: var(--e-global-color-2e52655) !important;
   border-radius: 5px !important;
+}
+
+div.product p.price,
+li.product span.price {
+  color: var(--e-global-color-8ed4e95) !important;
 }

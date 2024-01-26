@@ -39,5 +39,3 @@ function ads_stl_client_scripts(): void {
   wp_enqueue_script('ads-upload-stl-js', STL_PLUGIN_URL . 'assets/js/upload-form.js', false, '1.4', true);
   wp_localize_script('ads-upload-stl-js', 'frontend_ajax', array('ajaxURL' => admin_url('admin-ajax.php')));
 }
-
-

@@ -101,6 +101,23 @@ function hide_stl_model_price($price_html, $product): mixed {
 }
 
 
+add_action('woocommerce_product_query', 'ads_stl_woocommerce_product_query', 30, 1);
+/**
+ * this method overrides the default woocommerce product query to hide the printing category products from listing
+ * @param $wp_query
+ * @return mixed
+ */
+function ads_stl_woocommerce_product_query($wp_query) {
+  $wp_query->query_vars['tax_query'][] = [
+    'taxonomy' => 'product_cat',
+    'field' => 'slug',
+    'terms' => 'printing', //slug name of category
+    'operator' => 'NOT IN',
+  ];
+  return $wp_query;
+}
+
+
 add_action('woocommerce_checkout_create_order_line_item', 'custom_checkout_create_order_line_item', 20, 4);
 /**
  * This method sets the metadata of the cart stl_model type products
