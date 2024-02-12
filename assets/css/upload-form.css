@@ -1,0 +1,62 @@
+.hide {
+  display: none !important;
+}
+
+.file-input-container {
+  display: flex;
+  align-items: start;
+  gap: 20px;
+}
+
+.stl_estimation {
+  display: flex;
+  margin-top: 5%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.stl-progress-bar {
+  height: 30px;
+}
+
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+.load {
+  width: 20px;
+  height: 20px;
+  border: solid 5px;
+  border-radius: 50%;
+  border-right-color: transparent;
+  border-bottom-color: transparent;
+  -webkit-transition: all 0.5s ease-in;
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 1.0s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+
+  transition: all 0.5s ease-in;
+  animation-name: rotate;
+  animation-duration: 1.0s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}

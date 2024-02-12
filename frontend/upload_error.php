@@ -1,0 +1,1 @@
+<p>Error uploading file: <?php echo $error; ?></p>
