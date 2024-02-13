@@ -181,7 +181,7 @@ class STLCalc {
      */
 
 //    $volume = ($volume * 0.25) + ($volume * 0.75 * $infill_density / 100);
-    $time_in_seconds = intval($infill_density * $volume * 1000 / (floatval($printing_speed) * floatval($nozzle_diameter) * floatval($layer_height[0])));
+    $time_in_seconds = intval($infill_density * $volume * 1000 / (floatval($printing_speed) * floatval($nozzle_diameter) * floatval($layer_height)));
     return [max($time_in_seconds, 60), $this->getFormattedTime($time_in_seconds)];
   }
 

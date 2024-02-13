@@ -71,7 +71,7 @@ add_action("wp_ajax_nopriv_ads_stl_change_in_density_handler", "ads_stl_change_i
  */
 function ads_stl_change_in_density_handler() {
   $file_path = str_replace(get_site_url() . "/wp-content/uploads", wp_upload_dir()['basedir'], $_POST['file_url']);
-  echo prepare_stl_estimation_response($file_path, $_POST['file_name'], $_POST['infill_density'], $_POST['infill_density_label'], $_POST['file_url'], $upload['layer_height']);
+  echo prepare_stl_estimation_response($file_path, $_POST['file_name'], $_POST['infill_density'], $_POST['infill_density_label'], $_POST['file_url'], $_POST['layer_height']);
   wp_die();
 }
 
@@ -87,7 +87,7 @@ function ads_stl_form_submission_handler() {
   }
   $upload = wp_handle_upload($_FILES['file'], array('test_form' => false, 'unique_filename_callback' => null));
   if ($upload && !isset($upload['error'])) {
-    echo prepare_stl_estimation_response($upload['file'], $_FILES['file']['name'], $_POST['infill_density'], $_POST['infill_density_label'], $upload['url'], $upload['layer_height']);
+    echo prepare_stl_estimation_response($upload['file'], $_FILES['file']['name'], $_POST['infill_density'], $_POST['infill_density_label'], $upload['url'], $_POST['layer_height']);
   } else {
     echo file_upload_error($upload['error']);
   }
@@ -109,7 +109,7 @@ function prepare_stl_estimation_response($file_path, $file_name, $infill_density
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
   $volume = $stl_calculator->getVolume('cm');
-  [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density);
+  [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height);
   $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
   return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
 }
