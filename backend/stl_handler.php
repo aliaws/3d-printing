@@ -73,7 +73,7 @@ add_action("wp_ajax_nopriv_ads_stl_change_in_density_handler", "ads_stl_change_i
  */
 function ads_stl_change_in_density_handler() {
   $file_path = str_replace(get_site_url() . "/wp-content/uploads", wp_upload_dir()['basedir'], $_POST['file_url']);
-  echo prepare_stl_estimation_response($file_path, $_POST['file_name'], $_POST['infill_density'], $_POST['infill_density_label'], $_POST['file_url'], $_POST['layer_height']);
+  echo prepare_stl_estimation_response($file_path, $_POST['file_name'], $_POST['infill_density'], $_POST['infill_density_label'], $_POST['file_url'],$_POST['layer_height'],$_POST['unit']);
   wp_die();
 }
 
@@ -89,7 +89,7 @@ function ads_stl_form_submission_handler() {
   }
   $upload = wp_handle_upload($_FILES['file'], array('test_form' => false, 'unique_filename_callback' => null));
   if ($upload && !isset($upload['error'])) {
-    echo prepare_stl_estimation_response($upload['file'], $_FILES['file']['name'], $_POST['infill_density'], $_POST['infill_density_label'], $upload['url'], $_POST['layer_height']);
+    echo prepare_stl_estimation_response($upload['file'], $_FILES['file']['name'], $_POST['infill_density'], $_POST['infill_density_label'], $upload['url'],$_POST['layer_height'],$_POST['unit']);
   } else {
     echo file_upload_error($upload['error']);
   }
@@ -108,18 +108,20 @@ function ads_stl_form_submission_handler() {
 * @param $unit
  * @return bool|string
  */
-function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height, $unit = 'mm'): bool|string {
+function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height, $unit): bool|string {
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
-  
+  $limit = [294,290];
+  $randomIndex = array_rand($limit);
   $volume = $stl_calculator->getVolume($unit);
   $hard_limit = (int) get_option("ads_hard_limit");
-  $height = 100;
-  if($hard_limit > 0 && $height > $hard_limit){
-    // throw error
+ 
+  if($hard_limit <= $limit[$randomIndex]){
+    echo file_upload_error(get_option("ads_hard_limit_message"));
+    wp_die();
   }
 
-  [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height);
+  [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height,$unit);
   $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
   return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
 }
