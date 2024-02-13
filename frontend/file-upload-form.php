@@ -4,11 +4,17 @@
     <input type="file" class="full-width" name="custom_file" id="file_upload_input" accept=".stl" disabled>
     <progress id="progress_bar" class="stl-progress-bar full-width" value="0" max="100"></progress>
     <div class=""> 
-      <p>Select Unit</p>
-      <label for="mm">millimeters:</label>
-      <input id="mm" name="unit" value="mm" type="radio" checked="checked">
-      <label for="inches">inches:</label>
-      <input id="inches" name="unit" value="inch" type="radio">
+      <span class="unit-heading">Select Unit:</span>
+      <div class="unit-wrapper">
+        <span>
+          <label for="mm">Millimeters:</label>
+          <label for="inches">Inches:</label>
+        </span>
+        <span>
+          <input id="mm" name="unit" value="mm" type="radio" checked="checked">
+          <input id="inches" name="unit" value="inch" type="radio">
+        </span>
+      </div>
     </div>
     <?php if (!empty($infill_density_values)) {
       $itr = 0; ?>

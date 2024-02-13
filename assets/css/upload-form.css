@@ -60,3 +60,19 @@
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
+.unit-heading{
+  color: black;
+}
+.unit-wrapper{
+  display: inline-flex;
+}
+.unit-wrapper span{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+.unit-wrapper span:first-child,
+.unit-heading{
+  margin-right: 10px;
+  align-items: end;
+}
