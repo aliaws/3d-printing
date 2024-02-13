@@ -134,7 +134,8 @@ class STLCalc {
     public function convertVolume($volume = 0, $unit){
         if ($unit == 'cm') {
             $volume = ($volume / 1000);
-        } else {
+        }
+        else if($unit == 'inch') {
             $volume = $this->inch3($volume / 1000);
         }
         return $volume;
