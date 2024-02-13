@@ -43,6 +43,9 @@ function manage_printer_properties(): void {
         $infill_density_values = get_option('ads_infill_density_values') ? get_option('ads_infill_density_values') : [0 => ''];
     }
 
+    $hard_limit = $_POST['hard_limit'] ?? get_option('ads_hard_limit') ?? '';
+    $hard_limit_message = $_POST['hard_limit_message'] ?? get_option('ads_hard_limit_message') ?? '';
+
     ob_start();
     include_once(STL_PLUGIN_DIR . '/frontend/printing-form.php');
     echo ob_get_clean();
@@ -71,6 +74,9 @@ function validate_printer_properties_form(): array {
             update_option('ads_infill_density', $_POST['infill_density']);
             update_option('ads_infill_density_values', $infill_density_values);
             update_option('ads_default_infill_density', $_POST['default_infill_density'] ?? 0);
+
+            update_option('ads_hard_limit', $_POST['hard_limit'] ?? -1);
+            update_option('ads_hard_limit_message', $_POST['hard_limit_message']);
         }
     }
     return [

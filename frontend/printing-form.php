@@ -72,7 +72,7 @@
           } ?>
         </span>
         <p class="ads-text-error"><?php echo $data['error_messages']['layer_heights'] ?? ''; ?></p>
-        <button type="button" id="add_field" class="hide add-button button button-primary">+ Add Layer Height</button>
+        <button type="button" id="add_field" class="add-button button button-primary">+ Add Layer Height</button>
       </td>
     </tr>
     <tr>
