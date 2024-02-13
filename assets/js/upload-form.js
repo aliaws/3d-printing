@@ -9,7 +9,7 @@ jQuery(document).ready(($) => {
 
   addToCartHandler();
 
-  densityChangeEvent();
+  densityAndLayerHeightChangeEvent();
 })
 
 
@@ -175,6 +175,7 @@ const prepareAddToCartFormData = () => {
   add_to_cart_form.append('infill_density_label', jQuery('#stl_infill_density_label').val());
   add_to_cart_form.append('product_id', jQuery('#stl_product_id').val());
   add_to_cart_form.append('printing_time', jQuery('#stl_printing_time').val());
+  add_to_cart_form.append('layer_height', parseFloat(jQuery('select#layer_height').val()));
   add_to_cart_form.append('action', 'ads_stl_add_to_cart_handler');
   return add_to_cart_form;
 }
@@ -183,8 +184,14 @@ const prepareAddToCartFormData = () => {
  * this method registers an event that triggers on the change in density and makes an ajax call to recalculate
  * the estimate
  */
-const densityChangeEvent = () => {
+const densityAndLayerHeightChangeEvent = () => {
   jQuery('select#infill_density').on('change', () => {
+    if (jQuery('#stl_file_name').val() !== undefined) {
+      jQuery.ajax(prepareChangeInDensityAjaxSettings());
+    }
+  })
+
+  jQuery('select#layer_height').on('change', () => {
     if (jQuery('#stl_file_name').val() !== undefined) {
       jQuery.ajax(prepareChangeInDensityAjaxSettings());
     }
@@ -222,7 +229,9 @@ const prepareChangeInDensityFormData = () => {
   let add_to_cart_form = new FormData();
   add_to_cart_form.append('file_name', jQuery('#stl_file_name').val());
   add_to_cart_form.append('file_url', jQuery('#stl_file_url').val());
+  add_to_cart_form.append('layer_height', selectedObject.val());
   add_to_cart_form.append('infill_density', selectedObject.val());
+  add_to_cart_form.append('layer_height', parseFloat(jQuery('select#layer_height').val()));
   add_to_cart_form.append('infill_density_label', selectedObject.text());
   add_to_cart_form.append('action', 'ads_stl_change_in_density_handler');
   return add_to_cart_form;

@@ -170,10 +170,16 @@ class STLCalc {
     return $myarr;
   }
 
-  public function calculatePrintingTime($volume, $infill_density): array {
+  public function calculatePrintingTime($volume, $infill_density, $layer_height): array {
     $printing_speed = get_option('ads_printing_speed') ?? false;
     $nozzle_diameter = get_option('ads_nozzle_diameter') ?? false;
-    $layer_height = get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
+
+    /**
+     * 
+     * Now user is sending layer height  
+     *  $layer_height = get_option('ads_layer_heights') ? get_option('ads_layer_heights') : [0 => ''];
+     */
+
 //    $volume = ($volume * 0.25) + ($volume * 0.75 * $infill_density / 100);
     $time_in_seconds = intval($infill_density * $volume * 1000 / (floatval($printing_speed) * floatval($nozzle_diameter) * floatval($layer_height[0])));
     return [max($time_in_seconds, 60), $this->getFormattedTime($time_in_seconds)];
