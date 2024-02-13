@@ -38,6 +38,7 @@ function ads_stl_add_to_cart_handler() {
     'printing_time' => $_POST['printing_time'],
     'file_name' => $_POST['file_name'],
     'infill_density' => $_POST['infill_density'],
+    'unit' => $_POST['unit'],
     'layer_height' => $_POST['layer_height'],
 //    'infill_density_label' => $_POST['infill_density_label']
   ];
