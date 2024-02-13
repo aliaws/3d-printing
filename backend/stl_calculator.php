@@ -45,12 +45,16 @@ class STLCalc {
     }
 
     public function calculateDimensions() {
+        $dimensions  = ["width" => 0, "height" => 0, "depth" => 0];
+        $this->fstl_handle = fopen($this->fstl_path, "rb");
+        fseek($this->fstl_handle, 80);
+        $triangleCount = $this->readTrianglesCount();
 
         $minX = $minY = $minZ = PHP_FLOAT_MAX;
         $maxX = $maxY = $maxZ = -PHP_FLOAT_MAX;
 
         // Read through the triangles
-        for ($i = 0; $i < $this->triangles_count; $i++) {
+        for ($i = 0; $i < $triangleCount; $i++) {
             // Skip normal vectors
             fseek($this->fstl_handle, 12, SEEK_CUR);
             // Read vertices
@@ -68,7 +72,7 @@ class STLCalc {
             }
             fseek($this->fstl_handle, 2, SEEK_CUR);
         }
-
+        fclose($this->fstl_handle);
         return [
           'width' => round($maxX - $minX, 2),
           'height' => round($maxY - $minY, 2),
@@ -82,14 +86,14 @@ class STLCalc {
 
     private function calculateVolume() {
         $totalVolume = 0;
-        $dimensions  = ["width" => 0, "height" => 0, "depth" => 0];
+
         if ($this->b_binary) {
             $totbytes = filesize($this->fstl_path);
             $totalVolume = 0;
             try {
                 $this->readHeader();
                 $this->triangles_count = $this->readTrianglesCount();
-                $dimensions = $this->calculateDimensions();
+
 
                 $totalVolume = 0;
                 try {
@@ -112,7 +116,7 @@ class STLCalc {
             }
             $this->triangles_count = $k;
         }
-
+        $dimensions = $this->calculateDimensions();
         return [abs($totalVolume), $dimensions];
     }
 
@@ -168,7 +172,6 @@ class STLCalc {
     function phUnpack($sig, $l) {
         $s = fread($this->fstl_handle, $l);
         return unpack($sig, $s);
-
     }
 
     // Appends to an array either a single var or the contents of another array.
