@@ -21,7 +21,7 @@
       <select name="layer_height" id="layer_height">
         <?php foreach ($layer_heights_values as $height) { ?>
           <option value="<?php echo $height ?>">
-            <?php echo $height; ?>
+            <?php echo $height. " mm"; ?>
           </option>
           <?php $itr++;
         } ?>

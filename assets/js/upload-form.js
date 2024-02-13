@@ -91,11 +91,12 @@ const prepareUploadFileAjaxSettings = (uploadedFile) => {
 const getUploadFormInputs = (uploadedFile) => {
   let stl_form = new FormData();
   let selectedObject = jQuery('select#infill_density option:selected');
-  console.log('selected object', selectedObject)
+
   stl_form.append('file', uploadedFile);
   stl_form.append('action', 'ads_stl_form_submission_handler');
   stl_form.append('infill_density', selectedObject.val() ?? 1);
   stl_form.append('infill_density_label', selectedObject.text() ?? '');
+  stl_form.append('layer_height', parseFloat(jQuery('select#layer_height').val()));
   return stl_form;
 }
 
