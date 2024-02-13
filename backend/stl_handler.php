@@ -123,7 +123,7 @@ function prepare_stl_estimation_response($file_path, $file_name, $infill_density
   else {
     [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height,$unit);
     $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
-    $formatVolume = $stl_calculator->formatVolume($unit)
+    $formatVolume = $stl_calculator->formatVolume($unit);
     return calculated_price_volume_response($formatVolume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label, $layer_height, $unit);
   }
 }
