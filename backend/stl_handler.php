@@ -157,6 +157,8 @@ function ads_update_cart_line_items($product_name, $cart_item, $cart_item_key): 
   $product_name .= !empty($cart_item['file_name']) ? "<br> * File: {$cart_item['file_name']}" : "";
   $product_name .= !empty($cart_item['volume']) ? "<br> * Model Volume: {$cart_item['volume']}" : "";
   $product_name .= !empty($cart_item['infill_density_label']) ? "<br> * Infill Density: {$cart_item['infill_density_label']}" : "";
+  $product_name .= !empty($cart_item['layer_height']) ? "<br> * Layer height: {$cart_item['layer_height']} mm" : "";
+
   if (is_admin()) {
     $product_name .= !empty($cart_item['printing_time']) ? "<br> * Printing Time: {$cart_item['printing_time']}" : "";
   }
