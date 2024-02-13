@@ -129,6 +129,25 @@
         </button>
       </td>
     </tr>
+    <tr>
+      <th scope="row">
+        <label for="hard_limit">Hard limit<small>(mm)</small></label>
+      </th>
+      <td>
+        <input name="hard_limit" value="<?php echo $hard_limit; ?>" 
+            type="number" id="hard_limit" class="regular-text" placeholder="293">
+      </td>
+    </tr>
+    <tr>
+      <th scope="row">
+        <label for="hard_limit_message">Hard limit<small>(mm)</small></label>
+      </th>
+      <td>
+        <input name="hard_limit_message" value="<?php echo $hard_limit_message; ?>" 
+            type="text" id="hard_limit_message" class="regular-text" 
+            placeholder="Your object is too large to print">
+      </td>
+    </tr>
     </tbody>
   </table>
   <p class="submit">
