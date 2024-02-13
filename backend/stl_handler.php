@@ -113,7 +113,7 @@ function ads_stl_form_submission_handler() {
 function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height, $unit): bool|string {
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
-  $volume = $stl_calculator->getVolume($unit);
+  $volume = $stl_calculator->getVolume();
   
   $hard_limit = (int) get_option("ads_hard_limit");
  
@@ -123,7 +123,8 @@ function prepare_stl_estimation_response($file_path, $file_name, $infill_density
   else {
     [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height,$unit);
     $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
-    return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
+    $formatVolume = $stl_calculator->formatVolume($unit)
+    return calculated_price_volume_response($formatVolume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label, $layer_height, $unit);
   }
 }
 
@@ -148,9 +149,11 @@ function file_upload_error($error): bool|string {
  * @param $original_file_name
  * @param $infill_density
  * @param $infill_density_label
+ * @param $layer_height
+ * @param $unit
  * @return bool|string
  */
-function calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $original_file_name, $infill_density, $infill_density_label): bool|string {
+function calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $original_file_name, $infill_density, $infill_density_label, $layer_height, $unit): bool|string {
   ob_start();
   require_once STL_PLUGIN_DIR . '/frontend/stl_estimation.php';
   return ob_get_clean();

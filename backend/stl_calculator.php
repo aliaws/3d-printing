@@ -121,14 +121,17 @@ class STLCalc {
     }
 
 
-    public function getVolume($unit, $format = true) {
+    public function getVolume() {
         if (!$this->flag) {
             [$v, $dimensions] = $this->calculateVolume();
             $this->volume = $v;
             $this->dimensions = $dimensions;
             $this->flag = true;
         }
+        return $this->volume;
+    }
 
+    public function formatVolume($unit) {
         $volume = 0;
         if ($unit == 'cm') {
             $volume = ($this->volume / 1000);
@@ -137,11 +140,8 @@ class STLCalc {
         } else {
             $volume = $this->inch3($this->volume / 1000);
         }
-        $this->writeLogs("volume ".$volume);
-        if ($format){
-          return number_format((float)$volume, 2, '.', '') . " cubic {$unit}";
-        }
-        return $volume;
+
+        return number_format((float)$volume, 2, '.', '') . " cubic {$unit}";
     }
 
     public function getDimensions(){

@@ -24,4 +24,6 @@
          value="<?php echo $infill_density_label; ?>">
   <input type="hidden" name="file_url" id="stl_file_url" value="<?php echo $uploaded_file_url; ?>">
   <input type="hidden" name="original_file_name" id="stl_file_name" value="<?php echo $original_file_name; ?>">
+  <input type="hidden" name="layer_height" id="layer_height" value="<?php echo $layer_height; ?>">
+  <input type="hidden" name="unit" id="unit" value="<?php echo $unit; ?>">
 </div>
