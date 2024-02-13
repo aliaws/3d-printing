@@ -15,6 +15,18 @@
         } ?>
       </select>
     <?php } ?>
+    <?php if (!empty($layer_heights_values)) {
+      $itr = 0; ?>
+      <label for="layer_height">Layer Height:</label>
+      <select name="layer_height" id="layer_height">
+        <?php foreach ($layer_heights_values as $height) { ?>
+          <option value="<?php echo $height ?>">
+            <?php echo $height; ?>
+          </option>
+          <?php $itr++;
+        } ?>
+      </select>
+    <?php } ?>
   </div>
   <div id="file_upload_loader" class="load hide"></div>
   <input type="submit" class="hide button wp-element-button" name="upload_button" id="upload_button"

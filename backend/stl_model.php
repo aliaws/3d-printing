@@ -73,10 +73,15 @@ add_shortcode('ads_stl_printing_form', 'ads_stl_model_printing_estimate_form');
  */
 function ads_stl_model_printing_estimate_form(): bool|string {
   global $product;
-  $infill_density_values = [];
+  $infill_density_values = DEFAULT_LAYER_HEIGHTS;
   if (get_option('ads_infill_density')) {
     $infill_density_values = get_option('ads_infill_density_values');
   }
+  $layer_heights_values = [0.1, 0.2, 0.3];
+  if (get_option('ads_layer_heights')) {
+    $layer_heights_values = get_option('ads_layer_heights');
+  }
+
   $default_set = get_option('ads_default_infill_density') ?? 0;
   ob_start();
   require_once STL_PLUGIN_DIR . '/frontend/file-upload-form.php';

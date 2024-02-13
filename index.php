@@ -11,6 +11,8 @@
  */
 const STL_PLUGIN_DIR = __DIR__;
 define("STL_PLUGIN_URL", plugins_url('/', __FILE__));
+define("DEFAULT_LAYER_HEIGHTS", [0.1, 0.2, 0.3]);
+
 
 require_once(STL_PLUGIN_DIR . '/admin/admin.php');
 require_once(STL_PLUGIN_DIR . '/backend/stl_handler.php');

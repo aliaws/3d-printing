@@ -47,7 +47,7 @@
     <tr>
       <th scope="row">
         <label for="nozzle_diameter_0">
-          Layer Height <small>(mm)</small>
+          Layer Heights <small>(mm)</small>
           <span class='ads-text-error'>*</span>
         </label>
       </th>
