@@ -104,16 +104,18 @@ function ads_stl_form_submission_handler() {
  * @param $infill_density_label
  * @param $uploaded_file_url
  * @param $layer_height
+* @param $unit
  * @return bool|string
  */
-function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height): bool|string {
+function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height, $unit = 'mm'): bool|string {
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
   
-  $volume = $stl_calculator->getVolume('cm');
+  $volume = $stl_calculator->getVolume($unit);
   $hard_limit = (int) get_option("ads_hard_limit");
-  if($hard_limit > 0 ){
-    
+  $height = 100;
+  if($hard_limit > 0 && $height > $hard_limit){
+    // throw error
   }
 
   [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height);
