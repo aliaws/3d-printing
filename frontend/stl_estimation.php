@@ -1,7 +1,7 @@
 <table>
   <tr>
     <td>Model Volume:</td>
-    <td><strong><?php echo $volume; ?></strong></td>
+    <td><strong><?php echo $formatVolume; ?></strong></td>
   </tr>
   <tr>
     <td>Estimated Printing Price:</td>
