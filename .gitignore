@@ -3,3 +3,4 @@ wp-config.php
 test.php
 ./stl_files/*
 stl_files
+log/*

@@ -70,9 +70,9 @@ class STLCalc {
         }
 
         return [
-            'width' => round($maxX - $minX, 2),
-            'height' => round($maxY - $minY, 2),
-            'depth' => round($maxZ - $minZ, 2),
+          'width' => round($maxX - $minX, 2),
+          'height' => round($maxY - $minY, 2),
+          'depth' => round($maxZ - $minZ, 2),
         ];
     }
 
@@ -82,7 +82,7 @@ class STLCalc {
 
     private function calculateVolume() {
         $totalVolume = 0;
-        $dimensions  = [];
+        $dimensions  = ["width" => 0, "height" => 0, "depth" => 0];
         if ($this->b_binary) {
             $totbytes = filesize($this->fstl_path);
             $totalVolume = 0;
@@ -94,8 +94,8 @@ class STLCalc {
                 $totalVolume = 0;
                 try {
                     while (ftell($this->fstl_handle) < $totbytes) {
-                        $triangle = $this->readTriangle();
-                        $totalVolume += $triangle;
+                      $triangle = $this->readTriangle();
+                      $totalVolume += $triangle;
                     }
                 } catch (Exception $e) {
                     return $e;
@@ -133,15 +133,23 @@ class STLCalc {
         } else {
             $volume = $this->inch3($this->volume / 1000);
         }
-
+        $this->writeLogs("volume ".$volume);
         if ($format){
-            return number_format((float)$volume, 2, '.', '') . " cubic cm";
+          return number_format((float)$volume, 2, '.', '') . " cubic cm";
         }
+       
         return $volume;
     }
 
     public function getDimensions(){
-        return $this->dimensions;
+      return $this->dimensions;
+    }
+
+    public function hasErrorInDimensions($hard_limit) {
+      $dimensions = $this->getDimensions();
+      $this->writeLogs("Dimensions ".print_r($dimensions,true));
+      $this->writeLogs("limit ".$hard_limit);
+      return $dimensions['width'] > $hard_limit || $dimensions['height'] > $hard_limit || $dimensions['depth'] > $hard_limit;
     }
 
     function readHeader() {
@@ -257,5 +265,16 @@ class STLCalc {
         $default_printing_price = get_option('ads_default_printing_price') ?? 0;
         $printing_price = get_option('ads_printing_price') ?? 0;
         return number_format((float)($default_printing_price + ($printing_price * ($time_in_seconds / 60))), 2, '.', ',');
+    }
+
+    private function writeLogs($log_msg) {
+      $log_filename = $_SERVER['DOCUMENT_ROOT']."/log";
+      if (!file_exists($log_filename))
+      {
+          // create directory/folder uploads.
+          mkdir($log_filename, 0777, true);
+      }
+      $log_file_data = $log_filename.'/log_' . date('d-M-Y') . '.log';
+      file_put_contents($log_file_data, $log_msg . "\n", FILE_APPEND);
     }
 }

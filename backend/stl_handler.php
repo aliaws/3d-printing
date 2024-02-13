@@ -88,7 +88,7 @@ function ads_stl_form_submission_handler() {
     require_once(ABSPATH . 'wp-admin/includes/file.php');
   }
   $upload = wp_handle_upload($_FILES['file'], array('test_form' => false, 'unique_filename_callback' => null));
-  if ($upload && !isset($upload['error'])) {
+  if ($upload && !isset($upload['error']) ) {
     echo prepare_stl_estimation_response($upload['file'], $_FILES['file']['name'], $_POST['infill_density'], $_POST['infill_density_label'], $upload['url'],$_POST['layer_height'],$_POST['unit']);
   } else {
     echo file_upload_error($upload['error']);
@@ -111,19 +111,18 @@ function ads_stl_form_submission_handler() {
 function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height, $unit): bool|string {
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
-  $limit = [294,290];
-  $randomIndex = array_rand($limit);
   $volume = $stl_calculator->getVolume($unit);
+  
   $hard_limit = (int) get_option("ads_hard_limit");
  
-  if($hard_limit <= $limit[$randomIndex]){
-    echo file_upload_error(get_option("ads_hard_limit_message"));
-    wp_die();
+  if($hard_limit > 0 &&  $stl_calculator->hasErrorInDimensions($hard_limit)){
+    return file_upload_error(get_option("ads_hard_limit_message"));
   }
-
-  [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height,$unit);
-  $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
-  return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
+  else {
+    [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height,$unit);
+    $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
+    return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
+  }
 }
 
 /**
