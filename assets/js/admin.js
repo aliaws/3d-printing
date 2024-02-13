@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
   jQuery('#add_field').on('click', function () {
-    const input_field = `<p><input step="0.01" name="layer_heights[]" class="regular-text" type="number" >` +
-      `<span title="Remove field" class="remove-layer-height-btn">x</span></p>`;
+    const input_field = `<p><input step="0.01" name="layer_heights[]" class="regular-text" type="number">
+    <button title="Remove field" class="button button-primary remove-layer-height-btn">Remove</button>`;
     jQuery('.nozzle_diameter_wrapper').append(input_field);
   });
   jQuery(document).on('click', '.remove-layer-height-btn', function () {

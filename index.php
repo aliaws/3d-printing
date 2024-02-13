@@ -25,8 +25,8 @@ add_action('admin_enqueue_scripts', 'ads_stl_admin_scripts');
  * @return void
  */
 function ads_stl_admin_scripts(): void {
-  wp_enqueue_style('ads-stl-style', STL_PLUGIN_URL . 'assets/css/custom.css', false, '1.4');
-  wp_enqueue_script('ads-stl-js', STL_PLUGIN_URL . 'assets/js/admin.js', false, '1.4', true);
+  wp_enqueue_style('ads-stl-style', STL_PLUGIN_URL . 'assets/css/custom.css', false, '1.5');
+  wp_enqueue_script('ads-stl-js', STL_PLUGIN_URL . 'assets/js/admin.js', false, '1.5', true);
 }
 
 
