@@ -50,6 +50,7 @@ class STLCalc {
       $this->volume = $v;
       $this->flag = true;
     }
+    // print_r($this->volume);
     $volume = 0;
     if ($unit == 'cm') {
       $volume = ($this->volume / 1000);
@@ -74,7 +75,10 @@ class STLCalc {
         $totalVolume = 0;
         try {
           while (ftell($this->fstl_handle) < $totbytes) {
-            $totalVolume += $this->readTriangle();
+            $triangle = $this->readTriangle();
+            // echo $triangle;
+            // echo "<br/>";
+            $totalVolume += $triangle;
           }
         } catch (Exception $e) {
           return $e;

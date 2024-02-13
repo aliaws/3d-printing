@@ -109,7 +109,13 @@ function ads_stl_form_submission_handler() {
 function prepare_stl_estimation_response($file_path, $file_name, $infill_density, $infill_density_label, $uploaded_file_url, $layer_height): bool|string {
   require_once(STL_PLUGIN_DIR . '/backend/stl_calculator.php');
   $stl_calculator = new STLCalc($file_path);
+  
   $volume = $stl_calculator->getVolume('cm');
+  $hard_limit = (int) get_option("ads_hard_limit");
+  if($hard_limit > 0 ){
+    
+  }
+
   [$time_in_seconds, $formatted_time] = $stl_calculator->calculatePrintingTime($volume, $infill_density, $layer_height);
   $printing_price = $stl_calculator->calculatePrintingPrice($time_in_seconds);
   return calculated_price_volume_response($volume, $time_in_seconds, $formatted_time, $printing_price, $uploaded_file_url, $file_name, $infill_density, $infill_density_label);
