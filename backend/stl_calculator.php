@@ -131,16 +131,16 @@ class STLCalc {
         return $this->volume;
     }
 
-    public function formatVolume($unit) {
-        $volume = 0;
+    public function convertVolume($volume = 0, $unit){
         if ($unit == 'cm') {
-            $volume = ($this->volume / 1000);
-        } elseif ($unit == 'mm') {
-            $volume = $this->volume;
+            $volume = ($volume / 1000);
         } else {
-            $volume = $this->inch3($this->volume / 1000);
+            $volume = $this->inch3($volume / 1000);
         }
-
+        return $volume;
+    }
+    public function formatVolume($volume, $unit) {
+        $volume = $this->convertVolume($volume, $unit);
         return number_format((float)$volume, 2, '.', '') . " cubic {$unit}";
     }
 
@@ -232,6 +232,7 @@ class STLCalc {
     }
 
     public function calculatePrintingTime($volume, $infill_density, $layer_height): array {
+        $volume = $this->convertVolume($volume, 'cm');
         $printing_speed = get_option('ads_printing_speed') ?? false;
         $nozzle_diameter = get_option('ads_nozzle_diameter') ?? false;
 
