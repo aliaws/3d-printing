@@ -84,12 +84,7 @@ add_action("wp_ajax_nopriv_ads_stl_form_submission_handler", "ads_stl_form_submi
  * @return void
  */
 function ads_stl_form_submission_handler() {
-  $hard_limit = (int) get_option("ads_hard_limit");
-  if ($hard_limit == 300 ){
-    echo file_upload_error(get_option("ads_hard_limit_message"));
-    wp_die();
 
-  }
   if (!function_exists('wp_handle_upload')) {
     require_once(ABSPATH . 'wp-admin/includes/file.php');
   }

@@ -198,6 +198,12 @@ const densityAndLayerHeightChangeEvent = () => {
       jQuery.ajax(prepareChangeInDensityAjaxSettings());
     }
   })
+
+  jQuery('input[name="unit"]').on('change', () => {
+    if (jQuery('#stl_file_name').val() !== undefined) {
+      jQuery.ajax(prepareChangeInDensityAjaxSettings());
+    }
+  })
 }
 
 

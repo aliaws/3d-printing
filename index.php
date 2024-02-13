@@ -36,8 +36,8 @@ add_action('wp_enqueue_scripts', 'ads_stl_client_scripts');
  * @return void
  */
 function ads_stl_client_scripts(): void {
-  wp_enqueue_style('ads-site-stl-style', STL_PLUGIN_URL . 'assets/css/site-styles.css', false, '1.4');
-  wp_enqueue_style('ads-upload-stl-style', STL_PLUGIN_URL . 'assets/css/upload-form.css', false, '1.6');
-  wp_enqueue_script('ads-upload-stl-js', STL_PLUGIN_URL . 'assets/js/upload-form.js', false, '1.5', true);
+  wp_enqueue_style('ads-site-stl-style', STL_PLUGIN_URL . 'assets/css/site-styles.css', false, '1.5');
+  wp_enqueue_style('ads-upload-stl-style', STL_PLUGIN_URL . 'assets/css/upload-form.css', false, '1.7');
+  wp_enqueue_script('ads-upload-stl-js', STL_PLUGIN_URL . 'assets/js/upload-form.js', false, '1.7', true);
   wp_localize_script('ads-upload-stl-js', 'frontend_ajax', array('ajaxURL' => admin_url('admin-ajax.php')));
 }

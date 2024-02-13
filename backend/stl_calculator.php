@@ -139,9 +139,8 @@ class STLCalc {
         }
         $this->writeLogs("volume ".$volume);
         if ($format){
-          return number_format((float)$volume, 2, '.', '') . " cubic cm";
+          return number_format((float)$volume, 2, '.', '') . " cubic {$unit}";
         }
-       
         return $volume;
     }
 
