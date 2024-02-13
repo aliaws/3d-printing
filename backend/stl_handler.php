@@ -84,13 +84,20 @@ add_action("wp_ajax_nopriv_ads_stl_form_submission_handler", "ads_stl_form_submi
  * @return void
  */
 function ads_stl_form_submission_handler() {
+  $hard_limit = (int) get_option("ads_hard_limit");
+  if ($hard_limit == 300 ){
+    echo file_upload_error(get_option("ads_hard_limit_message"));
+    wp_die();
+
+  }
   if (!function_exists('wp_handle_upload')) {
     require_once(ABSPATH . 'wp-admin/includes/file.php');
   }
   $upload = wp_handle_upload($_FILES['file'], array('test_form' => false, 'unique_filename_callback' => null));
   if ($upload && !isset($upload['error']) ) {
     echo prepare_stl_estimation_response($upload['file'], $_FILES['file']['name'], $_POST['infill_density'], $_POST['infill_density_label'], $upload['url'],$_POST['layer_height'],$_POST['unit']);
-  } else {
+  }
+  else {
     echo file_upload_error($upload['error']);
   }
   wp_die();
